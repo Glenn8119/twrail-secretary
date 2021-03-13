@@ -1,17 +1,24 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React from "react";
+import ReactDOM from "react-dom";
+
+const App = () =>{
+    return(
+        <div>App</div>
+    )
+}
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+    <App />,
+    document.querySelector("#root")
+)
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+// async function fetchData() {
+//     const response = await axios.get("https://ptx.transportdata.tw/MOTC/v2/Rail/THSR/DailyTimetable/OD/0990/to/1060/2021-03-15?$top=30&$format=JSON", {
+//         headers:{
+//             "Authorization":'hmac username="074a161350e14f9799c1a8bcf708cff4", algorithm="hmac-sha1", headers="x-date", signature="Base64(HMAC-SHA1("x-date:" + x-date , PioM5p7dfmOk5XhIUh0U1IolXzc))"',
+//             "x-date": xDate
+//         }
+//     })
+//     console.log(response);
+// }
+

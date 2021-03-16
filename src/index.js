@@ -1,9 +1,20 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { BrowserRouter, Route } from "react-router-dom";
 
-const App = () =>{
-    return(
-        <div>App</div>
+import MainPage from "./components/mainPage";
+import CoverPage from "./components/coverPage";
+
+const App = () => {
+    return (
+        <div>
+            <BrowserRouter>
+                <div>
+                    <Route path="/" exact component={CoverPage} />
+                    <Route path="/main" component={MainPage} />
+                </div>
+            </BrowserRouter>
+        </div>
     )
 }
 
@@ -21,4 +32,6 @@ ReactDOM.render(
 //     })
 //     console.log(response);
 // }
+
+// muted loop autoPlay  ./video/video.mp4
 

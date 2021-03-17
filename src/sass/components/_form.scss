@@ -1,0 +1,54 @@
+
+// parent element是main
+.search{
+    width:70%;
+    height:8rem;
+    position: absolute;
+    top:5rem;
+    left:50%;
+    transform: translateX(-50%);
+
+    display:flex;
+    justify-content: space-around;
+
+    background-color: white;
+
+    &__select{
+
+        width:10rem;
+        border:none;
+        font-size: 2.5rem;
+        padding:1rem;
+
+        background-image: url(../../img/arrow.png);
+        background-size: 2.5rem 2.5rem; 
+        background-repeat: no-repeat;
+        background-position: right center;
+
+        appearance: none;
+        outline: none;
+        
+    }
+
+    &__icon{
+        border:none;
+        outline: none;
+        background-color: transparent;
+
+        svg.svg-inline--fa{
+            width:2rem;
+            height:2rem;
+        }
+    }
+
+    &__date{
+        border:none;
+        outline:none;
+        font-size:2rem;
+    }
+
+    &__time{
+        border:none;
+        outline:none;
+    }
+}

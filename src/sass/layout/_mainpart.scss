@@ -1,0 +1,56 @@
+.container{
+    width:120rem;
+    min-height:100vh;
+    margin:0 auto;
+    background-color: rgba($color-grey-light,.1);
+    
+}
+
+.navbar{
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    color:$color-grey-dark;
+    
+    height:5rem;
+    // background-color: violet;
+    &__logo{
+        font-size:3rem;
+        font-weight: bold;
+        margin-left:2rem;
+    }
+
+    &__item-box{
+        width:30rem;
+        display:flex;
+        justify-content: space-around;
+        align-items: center;
+        list-style: none;
+        font-size:2rem;
+        .item{
+            
+
+            &:not(:last-child){margin-right: 1rem;}
+
+            &__link:link,
+            &__link:visited{
+                text-decoration: none;
+                color:$color-grey-dark;
+            }
+            
+            svg{
+                width:3rem;
+                height:3rem;
+                color:$color-grey-dark;
+            }
+        }
+    }
+}
+
+
+.main{
+    min-height:80%;
+    width:100%;
+    position:relative;
+}
+

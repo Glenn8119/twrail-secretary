@@ -1,0 +1,84 @@
+.result{
+    width:100%;
+    margin-top:2rem;
+    height:50rem;
+}
+
+.title{
+    display:flex;
+    align-items: center;
+
+    font-size: 2rem;
+
+
+    svg{
+        color:$color-primary-dark;
+    }
+
+    &__left{
+        margin-left: 4rem;
+        margin-right:8rem;
+        font-size: 2.5rem;
+        svg{
+            margin:0 2rem;
+        }
+    }
+
+    &__middle{
+        margin-right: auto;
+    }
+
+    &__right{
+        display:flex;
+
+        &-early{
+            margin-right:2rem;
+
+            svg{
+                margin-right:2rem;
+            }
+        }
+
+        &-late{
+            margin:0 2rem;
+            svg{
+                margin-left:2rem;
+            }
+        }
+    }
+}
+
+.detail{
+    margin-top:2rem;
+    width:100%;
+
+    &__head,
+    &__body{
+        width:100%;
+    }
+
+    &__head-row,
+    &__body-row{
+        display:flex;
+        justify-content: space-around;
+        align-items: center;
+        height:7rem;
+        font-size:2.5rem;
+        margin: 1rem 0 ;
+    }
+
+    &__head-row{
+        background-color: $color-grey-light;
+        border-top:2px solid $color-grey;
+        color:$color-grey;
+        font-size:1.8rem;
+    }
+}
+
+//讓td和th對齊
+td,
+th{
+    display:block;
+    width:10rem;
+    text-align: center;
+}

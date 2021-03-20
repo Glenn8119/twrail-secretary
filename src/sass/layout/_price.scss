@@ -1,0 +1,87 @@
+.price{
+    width:100%;
+    background-color: $color-grey-light;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    padding:2rem 0;
+    .heading-2{
+        padding-bottom: 2rem;
+        position:relative;
+        margin: 1rem 0;
+    
+        &::after{
+            content:"";
+            display:block;
+            width:10rem;
+            height:.3rem;
+            background-color: $color-primary;
+            position:absolute;
+            bottom:0;
+            left:50%;
+            transform: translateX(-50%);
+        }
+    }
+}
+
+.detail-price{
+
+
+    width:100%;
+    &__head,
+    &__body{
+        width:100%;
+    }
+
+    &__head-row,
+    &__body-row{
+        display:flex;
+        justify-content: space-around;
+        align-items: center;
+        height:4rem;
+        font-size:1.8rem;
+        
+    }
+
+    &__head-row{
+        background-color: $color-grey;
+        color:$color-grey-dark;
+        th{
+            flex-grow: 2;
+        }
+        th:first-child{
+            text-align: right;
+            flex-grow: 1;
+        }
+    }
+
+    &__body-row{
+        td{
+            font-weight: 300;
+            flex-grow:2;
+        }
+        td:first-child{
+            text-align: right;
+            flex-grow: 1;
+        }
+    }
+}
+
+td,
+th{
+    // display:block;
+    width:20rem;
+    text-align: center;
+}
+
+.ticket-btn{
+    background-image: url(../../img/ticket.png);
+    background-size: cover;
+    border:none;
+    outline:none;
+    width:2rem;
+    height:2rem;
+    margin-left:2rem;
+    transform: translateY(.3rem);
+    cursor:pointer;
+}

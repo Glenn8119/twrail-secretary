@@ -16,7 +16,7 @@ const CoverPage = () => {
                 </video>
             </div>
             <div className="content">
-                <h1>歡迎使用高鐵秘書</h1>
+                <h1 className="heading-1">歡迎使用高鐵秘書</h1>
                 <div className="content__text">
                     <span className="line line-1">在這裡你可以...</span>
                     <span className="line line-2"><FontAwesomeIcon icon={faTrain} />模擬購票</span>

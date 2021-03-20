@@ -1,0 +1,156 @@
+.cart {
+  width: 25%;
+  height: calc(100% + 5rem);
+  position: absolute;
+  right: 0;
+  top: -5rem;
+  border-radius: 3px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  background-color: $color-secondary-light;
+  &__heading {
+    margin: 2rem 0;
+  }
+}
+
+//最近車次
+.early {
+  margin-bottom: 1.5rem;
+  width: 100%;
+    background-color: $color-primary-dark;
+    border-radius: 5px;
+    padding: 2rem;
+    padding-top: 1rem;
+    color:rgb(255, 255, 255);
+  
+  .heading-3 {
+    text-align: center;
+    margin-bottom:1rem;
+  }
+
+  &__detail {
+      font-weight: 500;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    font-size: 2rem;
+    &-date {
+      width: 100%;
+      span:not(:last-child) {
+        margin-right: 2rem;
+      }
+    }
+
+    &-information {
+      &-number {
+          margin-right:2rem;
+      }
+    }
+
+    div {
+        margin-bottom: .5rem;
+      }
+
+    &-time {
+        span{
+            display: inline-block;
+            background-color: white;
+            margin: 0 1rem;
+            border-radius: 3px;
+            width:3rem;
+            color:$color-grey-dark;
+            text-align: center;
+        }
+    }
+  }
+}
+
+.item {
+    display:flex;
+    align-items: center;
+    width:100%;
+    padding:1.5rem;
+    font-size: 1.8rem;
+
+
+  &__left {
+      display:flex;
+      flex-direction: column;
+      align-items: center;
+      margin-right: 3rem;
+      justify-content: center;
+      border:1px solid grey;
+
+      &-location{
+          font-weight: 500;
+          padding:.5rem;
+      }
+      span:nth-of-type(2){
+        font-size:1rem;
+      }
+  }
+  &__middle {
+      margin-right:auto;
+      display:flex;
+      flex-direction: column;
+
+    &-time {
+        font-size: 1.5rem;
+            span:not(:last-child){
+                margin-right: 2rem;
+            }
+    }
+    &-number {
+        font-size:1.5rem;
+    }
+    &-price {
+        margin-top:1rem;
+        font-weight: 500;
+    }
+  }
+  &__right {
+      display:flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin-right:2rem;
+
+      svg{
+        margin: .3rem 0 ;
+        color:$color-primary-dark;
+      }
+  }
+
+  & > svg{
+    cursor: pointer;
+    margin: auto 0 ;
+  }
+}
+
+.total {
+    padding:1.5rem;
+
+  &__price {
+      font-size:2rem;
+      margin-bottom: 2rem;
+      text-align: center;
+      span{
+          margin: 0 2rem;
+      }
+  }
+  &__btn {
+      font-size:2rem;
+      border:none;
+      border-radius: 5px;
+      outline:none;
+      cursor: pointer;
+      background-color: $color-primary;
+      color:white;
+      width:20rem;
+      height:4rem;
+  }
+}

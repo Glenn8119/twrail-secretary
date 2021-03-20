@@ -1,7 +1,6 @@
 .container{
-    width:120rem;
+    
     min-height:100vh;
-    margin:0 auto;
     background-color: rgba($color-grey-light,.1);
 }
 
@@ -11,7 +10,7 @@
     align-items: center;
     color:$color-grey-dark;
     
-    height:5rem;
+    height:6rem;
     // background-color: violet;
     &__logo{
         font-size:3rem;
@@ -26,10 +25,23 @@
         align-items: center;
         list-style: none;
         font-size:2rem;
-        .item{
-            
-
+        position:relative;
+        .nav-item{
             &:not(:last-child){margin-right: 1rem;}
+            &::after{
+                display:block;
+                color:white;
+                content:"1";
+                position:absolute;
+                top:-.5rem;
+                right:.5rem;
+                background-color: $color-primary-dark;
+                width:2rem;
+                height:2rem;
+                border-radius: 10rem;
+                font-size:1.2rem;
+                text-align: center;
+            }
 
             &__link:link,
             &__link:visited{
@@ -41,6 +53,8 @@
                 width:3rem;
                 height:3rem;
                 color:$color-grey-dark;
+
+
             }
         }
     }

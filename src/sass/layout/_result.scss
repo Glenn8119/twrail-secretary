@@ -1,7 +1,7 @@
 .result{
     width:100%;
     margin-top:2rem;
-    height:50rem;
+    height:60rem;
 }
 
 .title{
@@ -60,7 +60,7 @@
     &__head-row,
     &__body-row{
         display:flex;
-        justify-content: space-around;
+        
         align-items: center;
         height:7rem;
         font-size:2.5rem;
@@ -70,15 +70,7 @@
     &__head-row{
         background-color: $color-grey-light;
         border-top:2px solid $color-grey;
-        color:$color-grey;
+        color:$color-grey-dark;
         font-size:1.8rem;
     }
-}
-
-//讓td和th對齊
-td,
-th{
-    display:block;
-    width:10rem;
-    text-align: center;
 }

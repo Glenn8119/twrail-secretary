@@ -3,9 +3,9 @@ import { connect } from "react-redux"
 
 const Price = ({price}) =>{
 
-    if(price.length){
-        console.log(price)
-    }
+    // if(price.length){
+    //     console.log(price)
+    // }
 
     return (
         <section className="price">

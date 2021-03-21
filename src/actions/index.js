@@ -1,7 +1,7 @@
 import { PtxPrice, PtxTime, getAuthorizationHeader } from "../apis/Ptx";
 
 export const fetchTime = (OriginStationID, DestinationStationID, TrainDate) => async dispatch => {
-    const response = await PtxTime.get(`/${OriginStationID}/to/${DestinationStationID}/${TrainDate}?$top=30&$format=JSON`,
+    const response = await PtxTime.get(`/${OriginStationID}/to/${DestinationStationID}/${TrainDate}?&$format=JSON`,
         {
             headers: getAuthorizationHeader()
         })

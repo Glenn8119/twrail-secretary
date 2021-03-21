@@ -5,16 +5,13 @@
   position: absolute;
   top: 5rem;
   left: 50%;
-  background-color: rgba(white,.5);
+  background-color: rgba(white, 0.5);
   border-radius: 5px;
   transform: translateX(-50%);
 
   display: flex;
   justify-content: space-around;
   align-items: center;
-
-
-
 
   &__btn {
     border: none;
@@ -55,8 +52,9 @@
   cursor: pointer;
 }
 
-input, select{
-    background-color: transparent;
+input,
+select {
+  background-color: transparent;
 }
 
 .date-box {
@@ -68,6 +66,15 @@ input, select{
     &::-webkit-calendar-picker-indicator:hover {
       cursor: pointer;
     }
+    &::-webkit-datetime-edit-year-field {
+      color: black;
+    }
+    //選取時數字不要反白
+    &:focus::-webkit-datetime-edit-year-field,
+    &:focus::-webkit-datetime-edit-month-field {
+      background-color: transparent;
+      color:black;
+    }
   }
 }
 
@@ -78,6 +85,11 @@ input, select{
     font-size: 2rem;
     &::-webkit-calendar-picker-indicator:hover {
       cursor: pointer;
+    }
+    //選取時上午下午區域不要反白
+    &:focus::-webkit-datetime-edit-ampm-field {
+      background-color: transparent;
+      color:black;
     }
   }
 }

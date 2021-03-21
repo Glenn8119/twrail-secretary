@@ -1,6 +1,12 @@
 import React from "react";
+import { connect } from "react-redux"
 
-const Price = () =>{
+const Price = ({price}) =>{
+
+    if(price.length){
+        console.log(price)
+    }
+
     return (
         <section className="price">
             <h2 className="heading-2">車廂票價參考</h2>
@@ -38,4 +44,8 @@ const Price = () =>{
     )
 }
 
-export default Price;
+const mapStateToProps = (state) => {
+    return { price : state.price }
+}
+
+export default connect(mapStateToProps)(Price);

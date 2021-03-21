@@ -2,8 +2,14 @@ import React from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 
+import { connect } from "react-redux";
 
-const Result = () => {
+
+const Result = ({time}) => {
+
+    if(time.length){
+        console.log(time)
+    }
     return(
         <section className="result">
             <div className="title">
@@ -74,4 +80,8 @@ const Result = () => {
     )
 }
 
-export default Result;
+const mapStateToProps = (state) => {
+    return { time : state.time }
+}
+
+export default connect(mapStateToProps)(Result);

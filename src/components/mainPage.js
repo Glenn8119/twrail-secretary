@@ -3,12 +3,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 
 import React from "react";
-import Search from "./search";
-import Result from "./result";
-import Carousel from "./carousel";
-import Price from "./price";
-import Cart from "./cart";
-import Footer from "./footer";
+import Search from "./Search";
+import Result from "./Result";
+import Carousel from "./Carousel";
+import Price from "./Price";
+import Cart from "./Cart";
+import Footer from "./Footer";
 
 
 const mainPage = () => {

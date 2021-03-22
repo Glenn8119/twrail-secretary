@@ -17,3 +17,29 @@ export const fetchPrice = (OriginStationID, DestinationStationID) => async dispa
 
     dispatch({ type: "FETCH_PRICE", payload: response.data })
 }
+
+export const getSelectedTime = (time) => {
+    return {
+        type:"GET_SELECTED_TIME",
+        payload: time
+    }
+}
+
+export const getSelectedDate = (date) => {
+    return {
+        type:"GET_SELECTED_DATE",
+        payload: date
+    }
+}
+
+export const setShow = () => {
+    return {
+        type:"SET_SHOW"
+    }
+}
+
+export const setNotShow = () => {
+    return {
+        type:"SET_NOT_SHOW"
+    }
+}

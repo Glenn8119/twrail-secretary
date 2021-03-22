@@ -1,10 +1,14 @@
 import React from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowUp, faArrowDown, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import { faArrowUp, faArrowDown, faTrashAlt, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { setNotShow } from "../actions"
 
-const Cart = () => {
+import { connect } from "react-redux";
+
+const Cart = ({ cartState, setNotShow }) => {
     return (
-        <section className="cart hide">
+        <section className={`cart ${cartState ? "show-cart" : ""}`}>
+            <FontAwesomeIcon icon={faTimes} onClick={setNotShow}/>
             <h2 className="heading-2 cart__heading">購物車</h2>
             <div className="early">
                 <h3 className="heading-3">最近車次</h3>
@@ -89,4 +93,8 @@ const Cart = () => {
     )
 }
 
-export default Cart;
+const mapStateToProps = (state) => {
+    return { cartState : state.cartState }
+}
+
+export default connect(mapStateToProps, {setNotShow})(Cart);

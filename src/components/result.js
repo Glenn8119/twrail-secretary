@@ -1,20 +1,55 @@
-import React, { useState } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { setShow, setNotShow } from "../actions/index"
 
 import { connect } from "react-redux";
 
 
-const Result = ({ time }) =>{
+const Result = ({ time, selectedTime, selectedDate, setShow, setNotShow }) => {
 
+    //設定預設要show的車次index
     const [currentArrIndexStart, setCurrentArrIndexStart] = useState(0);
     const [currentArrIndexEnd, setCurrentArrIndexEnd] = useState(5);
-        if (time.length) {
-        console.log(time)
-        
+
+    //挑選大於出發時間的班次
+    let startItem = time.find((item) => checkTime(item.OriginStopTime.DepartureTime, selectedTime));
+
+    useEffect(() => {
+        setCurrentArrIndexStart(time.indexOf(startItem));
+        setCurrentArrIndexEnd(time.indexOf(startItem) + 5)
+    }, [time])
+
+    //只顯示五個結果
+    const timeArr = time.slice(currentArrIndexStart, currentArrIndexEnd);
+    const renderDetail = timeArr.map((data, index) => {
+        return (
+            <tr key={index} className="detail__body-row">
+                <td>{data.OriginStopTime.DepartureTime}<button className="ticket-btn" onClick={setShow}></button></td>
+                <td>{subTime(data.OriginStopTime.DepartureTime, data.DestinationStopTime.ArrivalTime)}</td>
+                <td>{data.DestinationStopTime.ArrivalTime}</td>
+                <td>{data.DailyTrainInfo.TrainNo}</td>
+            </tr>
+        )
+    })
+
+    //檢驗t1是否晚於t2
+    function checkTime(t1, t2) {
+        let t1Arr = t1.split(":");
+        let t2Arr = t2.split(":");
+        let subHour = t1Arr[0] - t2Arr[0];
+        let subMinute = t1Arr[1] - t2Arr[1];
+
+        if (subHour > 0) {
+            return true;
+        } else if (subHour === 0 && subMinute > 0) {
+            return true;
+        } else {
+            return false
+        }
     }
 
-    //計算行車時間
+    //計算行車時間轉換成HH:MM:SS格式
     function subTime(DepartureTime, ArrivalTime) {
         let DepartureArr = DepartureTime.split(":");
         let ArrivalArr = ArrivalTime.split(":");
@@ -31,78 +66,75 @@ const Result = ({ time }) =>{
         return `${ResultDate.getHours() < 10 ? "0" + ResultDate.getHours() : ResultDate.getHours()}:${ResultDate.getMinutes() < 10 ? "0" + ResultDate.getMinutes() : ResultDate.getMinutes()}`
     }
 
-    function onEarlyClick(){
-        if(currentArrIndexStart>=5){
-            setCurrentArrIndexStart(currentArrIndexStart-5);
-            setCurrentArrIndexEnd(currentArrIndexEnd-5)
+    function onEarlyClick() {
+        if (currentArrIndexStart >= 5) {
+            setCurrentArrIndexStart(currentArrIndexStart - 5);
+            setCurrentArrIndexEnd(currentArrIndexEnd - 5)
         }
     }
 
-    function onLateClick(){
-        if(currentArrIndexEnd<time.length){
-            setCurrentArrIndexStart(currentArrIndexStart+5);
-            setCurrentArrIndexEnd(currentArrIndexEnd+5)
+    function onLateClick() {
+        if (currentArrIndexEnd < time.length) {
+            setCurrentArrIndexStart(currentArrIndexStart + 5);
+            setCurrentArrIndexEnd(currentArrIndexEnd + 5)
         }
     }
 
-    //只取五個結果
-    const timeArr = time.slice(currentArrIndexStart, currentArrIndexEnd);
-    const renderDetail = timeArr.map((data,index) => {
+    const renderResult = () => {
         return (
-            <tr key={index} className="detail__body-row">
-                <td>{data.OriginStopTime.DepartureTime}</td>
-                <td>{subTime(data.OriginStopTime.DepartureTime, data.DestinationStopTime.ArrivalTime)}</td>
-                <td>{data.DestinationStopTime.ArrivalTime}</td>
-                <td>{data.DailyTrainInfo.TrainNo}</td>
-            </tr>
-        )
-    })
-
-
-
-    return (
-        <section className="result">
-            <div className="title">
-                <div className="title__left">
-                    <span>{time.length > 0 ? time[0].OriginStopTime.StationName.Zh_tw : ""}</span>
-                    <FontAwesomeIcon icon={faArrowRight} />
-                    <span>{time.length > 0 ? time[0].DestinationStopTime.StationName.Zh_tw : ""}</span>
+            <section className="result">
+                <div className="title">
+                    <div className="title__left">
+                        <span>{time.length > 0 ? time[0].OriginStopTime.StationName.Zh_tw : ""}</span>
+                        <FontAwesomeIcon icon={faArrowRight} />
+                        <span>{time.length > 0 ? time[0].DestinationStopTime.StationName.Zh_tw : ""}</span>
+                    </div>
+                    <div className="title__middle">
+                        {selectedDate}{selectedTime}
                 </div>
-                <div className="title__middle">
-                    2021/3/18(四)15:00
-                </div>
-                <div className="title__right">
-                    <div className="title__right-early" onClick={onEarlyClick}>
-                        <FontAwesomeIcon icon={faArrowLeft} />
+                    <div className="title__right">
+                        <div className="title__right-early" onClick={onEarlyClick}>
+                            <FontAwesomeIcon icon={faArrowLeft} />
                         較早班次
                         </div>
-                    <div className="title__right-late" onClick={onLateClick}>
-                        較晚班次
+                        <div className="title__right-late" onClick={onLateClick}>
+                            較晚班次
                         <FontAwesomeIcon icon={faArrowRight} />
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <table className="detail">
-                <thead className="detail__head">
-                    <tr className="detail__head-row">
-                        <th>出發時間</th>
-                        <th>行車時間</th>
-                        <th>抵達時間</th>
-                        <th>車次</th>
-                    </tr>
-                </thead>
+                <table className="detail">
+                    <thead className="detail__head">
+                        <tr className="detail__head-row">
+                            <th>出發時間</th>
+                            <th>行車時間</th>
+                            <th>抵達時間</th>
+                            <th>車次</th>
+                        </tr>
+                    </thead>
 
-                <tbody className="detail__body">
-                    {time.length > 0 ? renderDetail : ""}
-                </tbody>
-            </table>
-        </section>
+                    <tbody className="detail__body">
+                        {time.length > 0 ? renderDetail : ""}
+                    </tbody>
+                </table>
+            </section>
+        )
+    }
+
+    return (
+        <Fragment>
+            {time.length > 0 ? renderResult() : null}
+        </Fragment>
     )
 }
 
 const mapStateToProps = (state) => {
-    return { time: state.time }
+    return {
+        time: state.time,
+        selectedTime: state.selectedTime,
+        selectedDate: state.selectedDate
+    }
 }
 
-export default connect(mapStateToProps)(Result);
+export default connect(mapStateToProps, { setShow, setNotShow })(Result);

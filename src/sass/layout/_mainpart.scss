@@ -3,6 +3,7 @@
     margin:0 auto;
     min-height:100vh;
     background-color: rgba($color-grey-light,.1);
+    overflow: hidden;
 }
 
 .navbar{
@@ -66,6 +67,6 @@
     min-height:80%;
     width:100%;
     position:relative;
-    overflow: hidden;
+    z-index:10;
 }
 

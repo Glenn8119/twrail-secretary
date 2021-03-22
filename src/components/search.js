@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExchangeAlt } from '@fortawesome/free-solid-svg-icons';
 import { connect } from "react-redux";
-import { fetchTime, fetchPrice } from "../actions";
+import { fetchTime, fetchPrice, getSelectedTime, getSelectedDate } from "../actions";
 
 
 let options = [
@@ -20,7 +20,7 @@ let options = [
     { name: "左營", id: "1070" }
 ];
 
-const Search = ({ fetchTime, fetchPrice, time, price}) => {
+const Search = ({ fetchTime, fetchPrice, getSelectedTime, getSelectedDate }) => {
 
     const date = new Date();
     const maxDate = new Date(date.getTime() + 1000 * 60 * 60 * 24 * 28);
@@ -35,7 +35,8 @@ const Search = ({ fetchTime, fetchPrice, time, price}) => {
     //預設日期時間為當下
     const [dateInput, setDateInput] = useState(dateValue);
     const [timeInput, setTimeInput] = useState(timeValue);
-    
+
+
     //起訖站預設為左營
     const [OriginStationID, setOriginStationID] = useState("0990");
     const [DestinationStationID, setDestinationStationID] = useState("1070")
@@ -48,20 +49,25 @@ const Search = ({ fetchTime, fetchPrice, time, price}) => {
         })
     }
 
-        //將日期轉換成 YY-MM-DD格式
-        function changeDateForm(date) {
-            const y = date.getFullYear();
-            const m = date.getMonth();
-            const d = date.getDate();
-    
-            return `${y}-${m < 9 ? "0" + (m + 1) : m + 1}-${d < 9 ? "0" + d : d}`
-        }
+    //取得所選的日期和時間
+    const week = ["日", "一", "二", "三", "四", "五", "六"];
+    const weekValue = week[new Date(dateInput).getDay()];
+
+    //將日期轉換成 YY-MM-DD格式
+    function changeDateForm(date) {
+        const y = date.getFullYear();
+        const m = date.getMonth();
+        const d = date.getDate();
+
+        return `${y}-${m < 9 ? "0" + (m + 1) : m + 1}-${d < 9 ? "0" + d : d}`
+    }
 
     function onSubmit(e) {
         e.preventDefault();
         fetchTime(OriginStationID, DestinationStationID, dateInput);
         fetchPrice(OriginStationID, DestinationStationID);
-        // fetchPrice();
+        getSelectedTime(timeInput);
+        getSelectedDate(`${dateInput}(${weekValue})`);
     }
 
     return (
@@ -70,10 +76,10 @@ const Search = ({ fetchTime, fetchPrice, time, price}) => {
             <div className="start-box">
                 <label htmlFor="start-box__select">起站</label>
                 <select
-                id="start-box__select"
-                className="start-box__select"
-                value={ OriginStationID }
-                onChange={(e)=>setOriginStationID(e.target.value)}
+                    id="start-box__select"
+                    className="start-box__select"
+                    value={OriginStationID}
+                    onChange={(e) => setOriginStationID(e.target.value)}
                 >
                     {renderOptions()}
                 </select>
@@ -84,10 +90,10 @@ const Search = ({ fetchTime, fetchPrice, time, price}) => {
             <div className="end-box">
                 <label htmlFor="end-box__select">迄站</label>
                 <select
-                id="end-box__select"
-                className="end-box__select"
-                value={ DestinationStationID }
-                onChange={(e)=> setDestinationStationID(e.target.value)}
+                    id="end-box__select"
+                    className="end-box__select"
+                    value={DestinationStationID}
+                    onChange={(e) => setDestinationStationID(e.target.value)}
                 >
                     {renderOptions()}
                 </select>
@@ -126,4 +132,4 @@ const mapStateToProps = (state) => {
     return { time: state.time, price: state.price }
 }
 
-export default connect(mapStateToProps, { fetchTime, fetchPrice })(Search);
+export default connect(mapStateToProps, { fetchTime, fetchPrice, getSelectedTime, getSelectedDate })(Search);

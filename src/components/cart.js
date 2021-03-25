@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useRef} from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { setNotShow, setLocalStorage } from "../actions"
@@ -8,6 +8,15 @@ import { getTicketPrice, getTimeDifference, changeTimeToMillisecond, findValidMi
 import CartItems from "./CartItems";
 
 const Cart = ({ cartState, setNotShow, storageArr, setLocalStorage }) => {
+
+    const refCart = useRef();
+    //點擊其他地方會收起cart
+    document.addEventListener("click", (e)=>{
+        if(refCart.current && !refCart.current.contains(e.target)){
+            setNotShow();
+        }
+        return 
+    })
 
     const renderDetail = storageArr ? storageArr.map((item, index) => {
         return (
@@ -35,6 +44,13 @@ const Cart = ({ cartState, setNotShow, storageArr, setLocalStorage }) => {
     let hoursLeft = TimeDifference ? TimeDifference.getUTCHours() : "-";
     let minutesLeft = TimeDifference ? TimeDifference.getUTCMinutes() : "-";
 
+    //顯示最近一班車資訊
+    let nextOriginStop = TimeDifference ? storageArr[targetIndex].originStop : null ;
+    let nextDestinationStop = TimeDifference ? storageArr[targetIndex].destinationStop : null ;
+    let nextDepartureTime = TimeDifference ? storageArr[targetIndex].departureTime : null ;
+    let nextDepartureDate = TimeDifference ? storageArr[targetIndex].date : null ;
+    let nextnumber = TimeDifference ? storageArr[targetIndex].number : null ;
+
     //計算票價總和
     let priceArr = storageArr.map(item => getTicketPrice(item))
     let totalPrice = priceArr.length > 0 ? priceArr.reduce((a, b) => {
@@ -42,16 +58,16 @@ const Cart = ({ cartState, setNotShow, storageArr, setLocalStorage }) => {
     }) : 0;
 
     return (
-        <section className={`cart ${cartState ? "show-cart" : ""}`}>
+        <section ref={refCart} className={`cart ${cartState ? "show-cart" : ""}`}>
             <FontAwesomeIcon icon={faTimes} onClick={setNotShow} />
             <h2 className="heading-2 cart__heading">購物車</h2>
             <div className="early">
                 <h3 className="heading-3">最近車次</h3>
                 <div className="early__detail">
-                    <div className="early__detail-date"><span>2021-03-25</span><span>14:00</span></div>
+                    <div className="early__detail-date"><span>{nextDepartureDate}</span><span>{nextDepartureTime}</span></div>
                     <div className="early__detail-information">
-                        <span className="early__detail-information-number">1011</span>
-                        <span className="early__detail-information-destination">高雄</span>往<span>板橋</span>
+                        <span className="early__detail-information-number">{nextnumber}</span>
+                        <span className="early__detail-information-destination">{nextOriginStop}</span>{TimeDifference ? "往" : ""}<span>{nextDestinationStop}</span>
                     </div>
                     <p className="early__detail-time">距發車剩餘<span>{daysLeft}</span>天<span>{hoursLeft}</span>時<span>{minutesLeft}</span>分</p>
                 </div>

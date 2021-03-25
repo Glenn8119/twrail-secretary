@@ -64,7 +64,8 @@ const Search = ({ fetchTime, fetchPrice, getSelectedTime, getSelectedDate, isCar
 
     function onSubmit(e) {
         e.preventDefault();
-        if(StationID === DestinationStationID){
+
+        if (StationID === DestinationStationID) {
             alert("出發站不可等於到達站")
         }
 
@@ -72,6 +73,29 @@ const Search = ({ fetchTime, fetchPrice, getSelectedTime, getSelectedDate, isCar
         fetchPrice(StationID, DestinationStationID);
         getSelectedTime(timeInput);
         getSelectedDate(`${dateInput}(${weekValue})`);
+    }
+
+    const onOriginStopChange = (e) => {
+        e.stopPropagation();
+        setStationID(e.target.value)
+    }
+
+
+    const onDestinationStopChange = (e) => {
+        e.stopPropagation();
+        setDestinationStationID(e.target.value)
+    }
+
+
+    const onDateSelectChange = (e) => {
+        e.stopPropagation();
+        setDateInput(e.target.value)
+    }
+
+
+    const onTimeSelectChange = (e) => {
+        e.stopPropagation();
+        setTimeInput(e.target.value)
     }
 
     return (
@@ -82,7 +106,7 @@ const Search = ({ fetchTime, fetchPrice, getSelectedTime, getSelectedDate, isCar
                     id="start-box__select"
                     className="start-box__select"
                     value={StationID}
-                    onChange={(e) => setStationID(e.target.value)}
+                    onChange={onOriginStopChange}
                 >
                     {renderOptions()}
                 </select>
@@ -96,7 +120,7 @@ const Search = ({ fetchTime, fetchPrice, getSelectedTime, getSelectedDate, isCar
                     id="end-box__select"
                     className="end-box__select"
                     value={DestinationStationID}
-                    onChange={(e) => setDestinationStationID(e.target.value)}
+                    onChange={onDestinationStopChange}
                 >
                     {renderOptions()}
                 </select>
@@ -108,7 +132,7 @@ const Search = ({ fetchTime, fetchPrice, getSelectedTime, getSelectedDate, isCar
                     id="date-box__input"
                     type="date"
                     value={dateInput}
-                    onChange={(e) => setDateInput(e.target.value)}
+                    onChange={onDateSelectChange}
                     className="date-box__input"
                     min={dateValue}
                     max={maxDateValue}
@@ -122,12 +146,12 @@ const Search = ({ fetchTime, fetchPrice, getSelectedTime, getSelectedDate, isCar
                     type="time"
                     className="time-box__input"
                     value={timeInput}
-                    onChange={(e) => setTimeInput(e.target.value)}
+                    onChange={onTimeSelectChange}
                 />
             </div>
 
-            <button className="search__btn">查詢</button>
-        </form>
+            <button className="search__btn" onClick={(e) => e.stopPropagation()}>查詢</button>
+        </form >
     )
 }
 

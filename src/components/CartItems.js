@@ -1,12 +1,22 @@
 import React from "react";
 import { connect } from "react-redux";
-import { getTicketPrice } from "./calculating";
+import { getTicketPrice, getTimeDifference } from "./calculating";
 
 import { setLocalStorage } from "../actions";
 
 const CartItems = ({ storageArr, setLocalStorage, item, index }) => {
-
+    //改變票種的同時儲存到redux以及localstorage
     const onTicketTypeChange = (e) => {
+
+        //人數低於11人不能選團體票 && 自由座不能選團體票
+        if (item.ticketNumber < 11 && e.target.value === "group") {
+            alert("選擇團體票人數須至少11人");
+            return;
+        } else if (item.seatType === "freeSeat" && e.target.value === "group") {
+            alert("自由座無販售團體票");
+            return
+        }
+
         let Arr = [...storageArr];
         let Obj = { ...item };
         Obj.ticketType = e.target.value;
@@ -14,8 +24,13 @@ const CartItems = ({ storageArr, setLocalStorage, item, index }) => {
         localStorage.setItem("dataList", JSON.stringify(Arr));
         setLocalStorage(Arr);
     }
-
+    //改變票種的同時儲存到redux以及localstorage
     const onSeatTypeChange = (e) => {
+        if (item.ticketType === "group" && e.target.value === "freeSeat") {
+            alert("自由座無販售團體票");
+            return;
+        }
+
         let Arr = [...storageArr];
         let Obj = { ...item };
         Obj.seatType = e.target.value;
@@ -25,9 +40,9 @@ const CartItems = ({ storageArr, setLocalStorage, item, index }) => {
     }
 
     const onClickDelete = (e) => {
-
+        e.stopPropagation();
         // 刪除該項目
-        let updatedArr = storageArr.filter((item) => storageArr.indexOf(item) != e.target.id )
+        let updatedArr = storageArr.filter((item) => storageArr.indexOf(item) != e.target.id)
         //更新LocalStorage
         localStorage.setItem("dataList", JSON.stringify(updatedArr));
         //儲存到reducer
@@ -50,6 +65,12 @@ const CartItems = ({ storageArr, setLocalStorage, item, index }) => {
     }
 
     const onClickDown = (item) => {
+        //團體票人數須大於11人
+        if (item.ticketNumber === 11 && item.ticketType === "group") {
+            alert("團體票人數須大於11人, 若要減少張數請選擇其他票種")
+            return;
+        }
+
         let Obj = { ...item }
         let Arr = [...storageArr]
         if (Obj.ticketNumber > 1) {
@@ -70,16 +91,16 @@ const CartItems = ({ storageArr, setLocalStorage, item, index }) => {
             </div>
             <div className="item__middle">
                 <div className="item__middle-time"><span>{item.date}</span><span>{item.departureTime}</span></div>
-                <div className="item__middle-number">車次<span>{item.number}</span></div>
+                <div className="item__middle-number">車次<span>{item.number}<span className="expired">{getTimeDifference(item) < 0 ? "(已過期)" : null}</span></span></div>
                 <div className="item__middle-price">$ {ticketPrice} 元</div>
                 <div className="item__select">
-                    <select onChange={onSeatTypeChange} value={item.seatType}>
+                    <select className="item__select-seatType" onChange={onSeatTypeChange} value={item.seatType}>
                         <option value="normal">標準</option>
                         <option value="business">商務</option>
                         <option value="freeSeat">自由座</option>
                     </select>
                         /
-                    <select onChange={onTicketTypeChange} value={item.ticketType}>
+                    <select className="item__select-ticketType" onChange={onTicketTypeChange} value={item.ticketType}>
                         <option value="adult">全票</option>
                         <option value="old">敬老</option>
                         <option value="group">團體</option>

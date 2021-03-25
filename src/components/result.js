@@ -5,9 +5,7 @@ import { setShow, setNotShow, setLocalStorage } from "../actions/index"
 import { connect } from "react-redux";
 import { checkTime } from "./calculating";
 
-const Result = ({ time, selectedTime, selectedDate, setShow, price, setLocalStorage, storageArr }) => {
-
-    
+const Result = ({ time, selectedTime, selectedDate, setShow, price, setLocalStorage, storageArr, cartState }) => {
 
     //設定預設要show的車次index
     const [currentArrIndexStart, setCurrentArrIndexStart] = useState(0);
@@ -23,6 +21,7 @@ const Result = ({ time, selectedTime, selectedDate, setShow, price, setLocalStor
 
     //點擊icon儲存資料至LOCAL STORAGE
     const onClick = (e) => {
+        e.stopPropagation()
         const btnId = e.target.id;
         const data = timeArr[btnId];
         let dataArr = storageArr ? [...storageArr] : [];
@@ -79,14 +78,16 @@ const Result = ({ time, selectedTime, selectedDate, setShow, price, setLocalStor
         return `${ResultDate.getHours() < 10 ? "0" + ResultDate.getHours() : ResultDate.getHours()}:${ResultDate.getMinutes() < 10 ? "0" + ResultDate.getMinutes() : ResultDate.getMinutes()}`
     }
 
-    function onEarlyClick() {
+    function onEarlyClick(e) {
+        e.stopPropagation();
         if (currentArrIndexStart >= 5) {
             setCurrentArrIndexStart(currentArrIndexStart - 5);
             setCurrentArrIndexEnd(currentArrIndexEnd - 5)
         }
     }
 
-    function onLateClick() {
+    function onLateClick(e) {
+        e.stopPropagation();
         if (currentArrIndexEnd < time.length) {
             setCurrentArrIndexStart(currentArrIndexStart + 5);
             setCurrentArrIndexEnd(currentArrIndexEnd + 5)
@@ -118,7 +119,7 @@ const Result = ({ time, selectedTime, selectedDate, setShow, price, setLocalStor
                     <div className="title__middle">
                         {selectedDate}{selectedTime}
                     </div>
-                    <div className="title__right">
+                    <div className={`title__right ${cartState ? "title__right-move" : ""}`}>
                         <div className="title__right-early" onClick={onEarlyClick}>
                             <FontAwesomeIcon icon={faArrowLeft} />
                         較早班次
@@ -161,7 +162,8 @@ const mapStateToProps = (state) => {
         selectedTime: state.selectedTime,
         selectedDate: state.selectedDate,
         price: state.price,
-        storageArr: state.storageArr
+        storageArr: state.storageArr,
+        cartState : state.cartState
     }
 }
 

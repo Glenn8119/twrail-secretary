@@ -29,6 +29,11 @@
 
   &__right {
     display: flex;
+    transition: all .4s;
+
+    &-move{
+      transform: translateX(-40rem);
+    }
 
     &-early {
       margin-right: 2rem;

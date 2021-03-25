@@ -7,8 +7,15 @@
 .title {
   display: flex;
   align-items: center;
-
   font-size: 2rem;
+
+  @media only screen and (max-width: $bp-large) {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-around;
+    height: 15rem;
+    padding-left: 2rem;
+  }
 
   svg {
     color: $color-primary-dark;
@@ -21,18 +28,32 @@
     svg {
       margin: 0 2rem;
     }
+
+    @media only screen and (max-width: $bp-large) {
+      margin:0;
+      border: 1px solid $color-grey-dark;
+      padding:.5rem;
+    }
   }
 
   &__middle {
     margin-right: auto;
+
+    @media only screen and (max-width: $bp-large) {
+      margin-right: 0;
+    }
   }
 
   &__right {
     display: flex;
-    transition: all .4s;
+    transition: all 0.4s;
 
-    &-move{
+    &-move {
       transform: translateX(-40rem);
+
+      @media only screen and (max-width: $bp-large) {
+        transform: translateX(0);
+      }
     }
 
     &-early {
@@ -81,15 +102,15 @@
   }
 }
 
-.ticket-btn{
+.ticket-btn {
   background-image: url(../../img/ticket.png);
   background-size: cover;
-  border:none;
+  border: none;
   background-color: transparent;
-  outline:none;
-  width:2rem;
-  height:2rem;
-  margin-left:2rem;
-  transform: translateY(.3rem);
-  cursor:pointer;
+  outline: none;
+  width: 2rem;
+  height: 2rem;
+  margin-left: 2rem;
+  transform: translateY(0.3rem);
+  cursor: pointer;
 }

@@ -8,6 +8,14 @@
   transition: all 0.4s;
   border: 1.5px solid $color-grey;
 
+  @media only screen and (max-width:$bp-large){
+    width:30%;
+  }
+
+  @media only screen and (max-width: $bp-small) {
+    width:45%;
+  }
+
   background-color: $color-grey-light;
 
   display: flex;
@@ -138,7 +146,6 @@
       font-size: 1.5rem;
     }
     &-price {
-      margin-top: 1rem;
       font-weight: 500;
     }
   }

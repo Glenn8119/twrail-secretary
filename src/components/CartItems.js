@@ -99,7 +99,6 @@ const CartItems = ({ storageArr, setLocalStorage, item, index }) => {
                         <option value="business">商務</option>
                         <option value="freeSeat">自由座</option>
                     </select>
-                        /
                     <select className="item__select-ticketType" onChange={onTicketTypeChange} value={item.ticketType}>
                         <option value="adult">全票</option>
                         <option value="old">敬老</option>

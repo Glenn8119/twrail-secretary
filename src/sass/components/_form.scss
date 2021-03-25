@@ -1,6 +1,6 @@
 // parent element是main
 .search {
-  width: 70%;
+  width: 80rem;
   height: 8rem;
   position: absolute;
   top: 5rem;
@@ -13,10 +13,22 @@
   justify-content: space-around;
   align-items: center;
 
-  transition:all .4s;
+  transition: all 0.4s;
 
+  @media only screen and (max-width: $bp-small) {
+    width:40rem;
+    height:40rem;
+    flex-direction: column;
+    align-items: center;
+    padding:3rem;
+    padding-bottom: 1rem;
+  }
   &-move {
-    transform: translateX(calc(-50% - 18rem));
+    transform: translateX(-60rem);
+    
+    @media only screen and (max-width: $bp-small) {
+      transform: translateX(-40rem);
+    }
   }
 
   &__btn {
@@ -28,6 +40,7 @@
     color: white;
     border-radius: 5px;
     cursor: pointer;
+
   }
 }
 
@@ -40,6 +53,15 @@
   flex-direction: column;
   padding: 0.5rem;
   border-bottom: 2px solid $color-grey;
+  @media only screen and (max-width: $bp-small) {
+    width:100%;
+    flex-direction: row;
+    justify-content: space-around;
+  }
+}
+
+.date-box{
+  margin:1.5rem 0;
 }
 
 .start-box__select,
@@ -69,6 +91,12 @@ select {
     outline: none;
     font-size: 2rem;
     width: 18rem;
+
+    @media only screen and (max-width: $bp-medium) {
+      width: 20rem;
+    }
+    
+
     &::-webkit-calendar-picker-indicator:hover {
       cursor: pointer;
     }
@@ -108,6 +136,11 @@ label {
   border: none;
   outline: none;
   background-color: transparent;
+
+  @media only screen and (max-width: $bp-small) {
+    transform: rotate(90deg);
+    margin: -1rem 0;
+  }
 
   svg.svg-inline--fa {
     width: 2rem;

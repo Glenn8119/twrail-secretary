@@ -8,7 +8,9 @@ import reducers from "./reducers";
 import App from "./components/App";
 
 const store = createStore(reducers, applyMiddleware(thunk));
-
+// document.addEventListener("click",()=>{
+//     console.log(store.getState())
+// })
 ReactDOM.render(
     <Provider store={store}>
         <App />

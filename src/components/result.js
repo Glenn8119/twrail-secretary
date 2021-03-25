@@ -1,12 +1,13 @@
 import React, { Fragment, useState, useEffect } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
-import { setShow, setNotShow } from "../actions/index"
-
+import { setShow, setNotShow, setLocalStorage } from "../actions/index"
 import { connect } from "react-redux";
+import { checkTime } from "./calculating";
 
+const Result = ({ time, selectedTime, selectedDate, setShow, price, setLocalStorage, storageArr }) => {
 
-const Result = ({ time, selectedTime, selectedDate, setShow, setNotShow }) => {
+    
 
     //設定預設要show的車次index
     const [currentArrIndexStart, setCurrentArrIndexStart] = useState(0);
@@ -20,33 +21,45 @@ const Result = ({ time, selectedTime, selectedDate, setShow, setNotShow }) => {
         setCurrentArrIndexEnd(time.indexOf(startItem) + 5)
     }, [time])
 
-    //只顯示五個結果
-    const timeArr = time.slice(currentArrIndexStart, currentArrIndexEnd);
-    const renderDetail = timeArr.map((data, index) => {
-        return (
-            <tr key={index} className="detail__body-row">
-                <td>{data.OriginStopTime.DepartureTime}<button className="ticket-btn" onClick={setShow}></button></td>
-                <td>{subTime(data.OriginStopTime.DepartureTime, data.DestinationStopTime.ArrivalTime)}</td>
-                <td>{data.DestinationStopTime.ArrivalTime}</td>
-                <td>{data.DailyTrainInfo.TrainNo}</td>
-            </tr>
-        )
-    })
+    //點擊icon儲存資料至LOCAL STORAGE
+    const onClick = (e) => {
+        const btnId = e.target.id;
+        const data = timeArr[btnId];
+        let dataArr = storageArr ? [...storageArr] : [];
+        let dataListObj = {};
 
-    //檢驗t1是否晚於t2
-    function checkTime(t1, t2) {
-        let t1Arr = t1.split(":");
-        let t2Arr = t2.split(":");
-        let subHour = t1Arr[0] - t2Arr[0];
-        let subMinute = t1Arr[1] - t2Arr[1];
-
-        if (subHour > 0) {
-            return true;
-        } else if (subHour === 0 && subMinute > 0) {
-            return true;
-        } else {
-            return false
+        // 起站
+        dataListObj.originStop = data.OriginStopTime.StationName.Zh_tw
+        // 迄站
+        dataListObj.destinationStop = data.DestinationStopTime.StationName.Zh_tw
+        // 車次
+        dataListObj.number = data.DailyTrainInfo.TrainNo
+        // 日期
+        dataListObj.date = data.TrainDate
+        // 時間
+        dataListObj.departureTime = data.OriginStopTime.DepartureTime
+        // 費用
+        dataListObj.price = {
+            business: price[0].Fares[0].Price,
+            normal: price[0].Fares[1].Price,
+            freeSeat: price[0].Fares[2].Price
         }
+        // 票種
+        dataListObj.ticketType = "adult";
+        dataListObj.seatType = "normal";
+        // 數量
+        dataListObj.ticketNumber = 1;
+
+        dataArr.push(dataListObj);
+        //先把新的資料更新到local storage上
+        localStorage.setItem("dataList", JSON.stringify(dataArr));
+
+        //再把localstorage的資料更新到localStorageReducer上
+        let localStorageReducer = JSON.parse(localStorage.getItem("dataList"));
+        setLocalStorage(localStorageReducer);
+
+        //開啟購物車
+        setShow();
     }
 
     //計算行車時間轉換成HH:MM:SS格式
@@ -80,6 +93,19 @@ const Result = ({ time, selectedTime, selectedDate, setShow, setNotShow }) => {
         }
     }
 
+    //只顯示五個結果
+    const timeArr = time.slice(currentArrIndexStart, currentArrIndexEnd);
+    const renderDetail = timeArr.map((data, index) => {
+        return (
+            <tr key={index} className="detail__body-row">
+                <td>{data.OriginStopTime.DepartureTime}<button id={index} className="ticket-btn" onClick={onClick}></button></td>
+                <td>{subTime(data.OriginStopTime.DepartureTime, data.DestinationStopTime.ArrivalTime)}</td>
+                <td>{data.DestinationStopTime.ArrivalTime}</td>
+                <td>{data.DailyTrainInfo.TrainNo}</td>
+            </tr>
+        )
+    })
+
     const renderResult = () => {
         return (
             <section className="result">
@@ -91,7 +117,7 @@ const Result = ({ time, selectedTime, selectedDate, setShow, setNotShow }) => {
                     </div>
                     <div className="title__middle">
                         {selectedDate}{selectedTime}
-                </div>
+                    </div>
                     <div className="title__right">
                         <div className="title__right-early" onClick={onEarlyClick}>
                             <FontAwesomeIcon icon={faArrowLeft} />
@@ -133,8 +159,10 @@ const mapStateToProps = (state) => {
     return {
         time: state.time,
         selectedTime: state.selectedTime,
-        selectedDate: state.selectedDate
+        selectedDate: state.selectedDate,
+        price: state.price,
+        storageArr: state.storageArr
     }
 }
 
-export default connect(mapStateToProps, { setShow, setNotShow })(Result);
+export default connect(mapStateToProps, { setShow, setNotShow, setLocalStorage })(Result);

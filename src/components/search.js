@@ -20,7 +20,7 @@ let options = [
     { name: "左營", id: "1070" }
 ];
 
-const Search = ({ fetchTime, fetchPrice, getSelectedTime, getSelectedDate }) => {
+const Search = ({ fetchTime, fetchPrice, getSelectedTime, getSelectedDate, isCartShow }) => {
 
     const date = new Date();
     const maxDate = new Date(date.getTime() + 1000 * 60 * 60 * 24 * 28);
@@ -37,8 +37,8 @@ const Search = ({ fetchTime, fetchPrice, getSelectedTime, getSelectedDate }) => 
     const [timeInput, setTimeInput] = useState(timeValue);
 
 
-    //起訖站預設為左營
-    const [OriginStationID, setOriginStationID] = useState("0990");
+    //起訖站預設為南港到左營
+    const [StationID, setStationID] = useState("0990");
     const [DestinationStationID, setDestinationStationID] = useState("1070")
 
     const renderOptions = () => {
@@ -64,22 +64,25 @@ const Search = ({ fetchTime, fetchPrice, getSelectedTime, getSelectedDate }) => 
 
     function onSubmit(e) {
         e.preventDefault();
-        fetchTime(OriginStationID, DestinationStationID, dateInput);
-        fetchPrice(OriginStationID, DestinationStationID);
+        if(StationID === DestinationStationID){
+            alert("出發站不可等於到達站")
+        }
+
+        fetchTime(StationID, DestinationStationID, dateInput);
+        fetchPrice(StationID, DestinationStationID);
         getSelectedTime(timeInput);
         getSelectedDate(`${dateInput}(${weekValue})`);
     }
 
     return (
-        <form className="search" onSubmit={onSubmit}>
-
+        <form className={`search ${isCartShow ? "search-move" : ""}`} onSubmit={onSubmit}>
             <div className="start-box">
                 <label htmlFor="start-box__select">起站</label>
                 <select
                     id="start-box__select"
                     className="start-box__select"
-                    value={OriginStationID}
-                    onChange={(e) => setOriginStationID(e.target.value)}
+                    value={StationID}
+                    onChange={(e) => setStationID(e.target.value)}
                 >
                     {renderOptions()}
                 </select>
@@ -129,7 +132,11 @@ const Search = ({ fetchTime, fetchPrice, getSelectedTime, getSelectedDate }) => 
 }
 
 const mapStateToProps = (state) => {
-    return { time: state.time, price: state.price }
+    return {
+        time: state.time,
+        price: state.price,
+        isCartShow: state.cartState
+    }
 }
 
 export default connect(mapStateToProps, { fetchTime, fetchPrice, getSelectedTime, getSelectedDate })(Search);

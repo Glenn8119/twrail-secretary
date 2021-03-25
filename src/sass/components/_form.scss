@@ -13,6 +13,12 @@
   justify-content: space-around;
   align-items: center;
 
+  transition:all .4s;
+
+  &-move {
+    transform: translateX(calc(-50% - 18rem));
+  }
+
   &__btn {
     border: none;
     outline: none;
@@ -24,6 +30,8 @@
     cursor: pointer;
   }
 }
+
+
 
 .start-box,
 .end-box,
@@ -73,7 +81,7 @@ select {
     &:focus::-webkit-datetime-edit-year-field,
     &:focus::-webkit-datetime-edit-month-field {
       background-color: transparent;
-      color:black;
+      color: black;
     }
   }
 }
@@ -89,7 +97,7 @@ select {
     //選取時上午下午區域不要反白
     &:focus::-webkit-datetime-edit-ampm-field {
       background-color: transparent;
-      color:black;
+      color: black;
     }
   }
 }

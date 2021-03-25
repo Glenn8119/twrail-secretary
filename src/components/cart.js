@@ -1,14 +1,49 @@
 import React from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowUp, faArrowDown, faTrashAlt, faTimes } from '@fortawesome/free-solid-svg-icons';
-import { setNotShow } from "../actions"
-
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import { setNotShow, setLocalStorage } from "../actions"
 import { connect } from "react-redux";
 
-const Cart = ({ cartState, setNotShow }) => {
+import { getTicketPrice, getTimeDifference, changeTimeToMillisecond, findValidMinimumItem } from "./calculating";
+import CartItems from "./CartItems";
+
+const Cart = ({ cartState, setNotShow, storageArr, setLocalStorage }) => {
+
+    const renderDetail = storageArr ? storageArr.map((item, index) => {
+        return (
+            <CartItems item={item} index={index} key={index} />
+        )
+    }) : null;
+
+    const onClickClear = () => {
+        let arr = [];
+        //更新Localstorage
+        localStorage.setItem("dataList", JSON.stringify(arr));
+        //儲存到reducer
+        setLocalStorage(JSON.parse(localStorage.getItem("dataList")));
+    }
+
+    //抓出購物車所有車次的出發時間, 轉換成毫秒後排成陣列
+    let timeArr = storageArr.map((item) => changeTimeToMillisecond(item));
+
+    //抓出尚未過期且最小的一班車的index
+    let targetIndex = timeArr.indexOf(findValidMinimumItem(timeArr));
+
+    //計算該車次發車時間與目前時間差
+    let TimeDifference = getTimeDifference(storageArr[targetIndex]);
+    let daysLeft = TimeDifference ? Math.floor(TimeDifference.getTime() / 3600000 / 24) : "-";
+    let hoursLeft = TimeDifference ? TimeDifference.getUTCHours() : "-";
+    let minutesLeft = TimeDifference ? TimeDifference.getUTCMinutes() : "-";
+
+    //計算票價總和
+    let priceArr = storageArr.map(item => getTicketPrice(item))
+    let totalPrice = priceArr.length > 0 ? priceArr.reduce((a, b) => {
+        return a + b;
+    }) : 0;
+
     return (
         <section className={`cart ${cartState ? "show-cart" : ""}`}>
-            <FontAwesomeIcon icon={faTimes} onClick={setNotShow}/>
+            <FontAwesomeIcon icon={faTimes} onClick={setNotShow} />
             <h2 className="heading-2 cart__heading">購物車</h2>
             <div className="early">
                 <h3 className="heading-3">最近車次</h3>
@@ -18,83 +53,23 @@ const Cart = ({ cartState, setNotShow }) => {
                         <span className="early__detail-information-number">1011</span>
                         <span className="early__detail-information-destination">高雄</span>往<span>板橋</span>
                     </div>
-                    <p className="early__detail-time">距發車剩餘<span>0</span>天<span>15</span>時<span>27</span>秒</p>
+                    <p className="early__detail-time">距發車剩餘<span>{daysLeft}</span>天<span>{hoursLeft}</span>時<span>{minutesLeft}</span>分</p>
                 </div>
             </div>
-            <div className="item">
-                <div className="item__left">
-                    <span className="item__left-location">高雄</span><span>往</span><span className="item__left-location">板橋</span>
-                </div>
-                <div className="item__middle">
-                    <div className="item__middle-time"><span>2021-3-25</span><span>14:00</span></div>
-                    <div className="item__middle-number">車次<span>1011</span></div>
-                    <div className="item__middle-price">$ 1500 元 (敬老票)</div>
-                </div>
-                <div className="item__right">
-                    <FontAwesomeIcon icon={faArrowUp} />
-                    <span>1</span>
-                    <FontAwesomeIcon icon={faArrowDown} />
-                </div>
-                <FontAwesomeIcon icon={faTrashAlt} />
-            </div>
-            <div className="item">
-                <div className="item__left">
-                    <span className="item__left-location">高雄</span><span>往</span><span className="item__left-location">板橋</span>
-                </div>
-                <div className="item__middle">
-                    <div className="item__middle-time"><span>2021-3-25</span><span>14:00</span></div>
-                    <div className="item__middle-number">車次<span>1011</span></div>
-                    <div className="item__middle-price">$ 1500 元 (敬老票)</div>
-                </div>
-                <div className="item__right">
-                    <FontAwesomeIcon icon={faArrowUp} />
-                    <span>1</span>
-                    <FontAwesomeIcon icon={faArrowDown} />
-                </div>
-                <FontAwesomeIcon icon={faTrashAlt} />
-            </div>
-            <div className="item">
-                <div className="item__left">
-                    <span className="item__left-location">高雄</span><span>往</span><span className="item__left-location">板橋</span>
-                </div>
-                <div className="item__middle">
-                    <div className="item__middle-time"><span>2021-3-25</span><span>14:00</span></div>
-                    <div className="item__middle-number">車次<span>1011</span></div>
-                    <div className="item__middle-price">$ 1500 元 (敬老票)</div>
-                </div>
-                <div className="item__right">
-                    <FontAwesomeIcon icon={faArrowUp} />
-                    <span>1</span>
-                    <FontAwesomeIcon icon={faArrowDown} />
-                </div>
-                <FontAwesomeIcon icon={faTrashAlt} />
-            </div>
-            <div className="item">
-                <div className="item__left">
-                    <span className="item__left-location">高雄</span><span>往</span><span className="item__left-location">板橋</span>
-                </div>
-                <div className="item__middle">
-                    <div className="item__middle-time"><span>2021-3-25</span><span>14:00</span></div>
-                    <div className="item__middle-number">車次<span>1011</span></div>
-                    <div className="item__middle-price">$ 1500 元 (敬老票)</div>
-                </div>
-                <div className="item__right">
-                    <FontAwesomeIcon icon={faArrowUp} />
-                    <span>1</span>
-                    <FontAwesomeIcon icon={faArrowDown} />
-                </div>
-                <FontAwesomeIcon icon={faTrashAlt} />
-            </div>
+            {renderDetail}
             <div className="total">
-                <p className="total__price">總金額 :<span>$ 1500</span>元</p>
-                <button className="total__btn">清空購物車</button>
+                <p className="total__price">總金額 :<span>$ {totalPrice}</span>元</p>
+                <button onClick={onClickClear} className="total__btn">清空購物車</button>
             </div>
         </section>
     )
 }
 
 const mapStateToProps = (state) => {
-    return { cartState : state.cartState }
+    return {
+        cartState: state.cartState,
+        storageArr: state.storageArr
+    }
 }
 
-export default connect(mapStateToProps, {setNotShow})(Cart);
+export default connect(mapStateToProps, { setNotShow, setLocalStorage })(Cart);

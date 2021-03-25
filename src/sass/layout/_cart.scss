@@ -6,25 +6,25 @@
   top: -6rem;
   transform: translateX(100%);
   transition:all .4s;
-  border : 1.5px solid $color-grey-light;
+  border : 1.5px solid $color-grey;
 
-  background-color: white;
+  background-color: $color-grey-light;
 
   display: flex;
   flex-direction: column;
   align-items: center;
   overflow: auto;
-
-  & > svg{
-    font-size:2rem;
-    position:absolute;
-    top:2.5rem;
-    left:2.5rem;
-    cursor:pointer;
-  }
   
   &__heading {
     margin: 2rem 0;
+  }
+
+  svg{
+    font-size: 2rem;
+    position:absolute;
+    left:2.5rem;
+    top:2.5rem;
+    cursor: pointer;
   }
 }
 
@@ -135,19 +135,38 @@
       justify-content: center;
       margin-right:2rem;
 
-      svg{
-        margin: .3rem 0 ;
-        color:$color-primary-dark;
+      &-up{
+        width:1.5rem;
+        height:1.5rem;
+        background-image: url(../../img/arrow_up.png);
+        background-size: cover;
+        cursor:pointer;
+        margin-bottom: 1rem;
+      }
+      &-down{
+        width:1.5rem;
+        height:1.5rem;
+        background-image: url(../../img/arrow_down.png);
+        background-size: cover;
+        cursor:pointer;
+        margin-top:1rem;
       }
   }
 
-  & > svg{
-    cursor: pointer;
-    margin: auto 0 ;
+  &__icon{
+    background-image: url(../../img/icon_trash.png);
+    background-size: cover;
+    width:2.5rem;
+    height:2.5rem;
+    border:none;
+    outline:none;
+    background-color: transparent;
+    cursor:pointer;
   }
 }
 
 .total {
+  margin-top:2rem;
     padding:1.5rem;
 
   &__price {

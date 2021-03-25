@@ -3,16 +3,20 @@ import { connect } from "react-redux"
 
 const Price = ({ price }) => {
 
-    if (price.length) {
-        console.log(price[0].Fares)
+    //團體票規則
+    function groupPrice(price) {
+        if (price * 0.95 % 10 > 5) {
+            return Math.round(price * 0.95 / 10) * 10 - 5;
+        }
+        return Math.round(price * 0.95 / 10) * 10
     }
 
-    //團體票規則
-    function groupPrice(price){
-        if(price*0.95%10>5){
-            return Math.round(price*0.95/10)*10-5;
+    //敬老票規則
+    function oldPrice(price) {
+        if (price * 0.5 % 10 > 5) {
+            return Math.round(price * 0.5 / 10) * 10 - 5;
         }
-        return Math.round(price*0.95/10)*10
+        return Math.round(price * 0.5 / 10) * 10
     }
 
 
@@ -20,7 +24,7 @@ const Price = ({ price }) => {
 
         const priceBusiness = price[0].Fares[0].Price
         const priceNormal = price[0].Fares[1].Price
-        const priceNonReserved = price[0].Fares[2].Price
+        const pricefreeSeat = price[0].Fares[2].Price
         // const priceBusiness  
 
         return (
@@ -39,19 +43,19 @@ const Price = ({ price }) => {
                         <tr className="detail-price__body-row">
                             <td>標準車廂</td>
                             <td>${priceNormal}</td>
-                            <td>${priceNormal/2}</td>
+                            <td>${oldPrice(priceNormal)}</td>
                             <td>${groupPrice(priceNormal)}</td>
                         </tr>
                         <tr className="detail-price__body-row">
                             <td>商務車廂</td>
                             <td>${priceBusiness}</td>
-                            <td>${priceBusiness/2}</td>
+                            <td>${oldPrice(priceBusiness)}</td>
                             <td>${groupPrice(priceBusiness)}</td>
                         </tr>
                         <tr className="detail-price__body-row">
                             <td>自由座車廂</td>
-                            <td>${priceNonReserved}</td>
-                            <td>${priceNonReserved/2}</td>
+                            <td>${pricefreeSeat}</td>
+                            <td>${oldPrice(pricefreeSeat)}</td>
                             <td>-</td>
                         </tr>
                     </tbody>

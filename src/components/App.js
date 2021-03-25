@@ -4,8 +4,6 @@ import { BrowserRouter, Route } from "react-router-dom";
 import MainPage from "./MainPage";
 import CoverPage from "./CoverPage";
 
-
-
 const App = () => {
     return (
         <div>
@@ -18,6 +16,7 @@ const App = () => {
         </div>
     )
 }
+
 
 export default App;
 

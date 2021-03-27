@@ -1,9 +1,9 @@
 .cart {
   width: 25%;
-  height: calc(100% + 6rem + 15rem);
-  position: absolute;
+  height: 100%;
+  position: fixed;
   right: 0;
-  top: -6rem;
+  top: 0;
   transform: translateX(100%);
   transition: all 0.4s;
   border: 1.5px solid $color-grey;

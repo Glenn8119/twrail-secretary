@@ -164,6 +164,7 @@
       &-ticketType {
         margin-left: 1rem;
         outline: none;
+        border-radius: 2px;
         @media only screen and (max-width: $bp-smallest) {
           width:30%;
           font-size:2.5rem;
@@ -218,11 +219,13 @@
 .total {
   margin-top: 2rem;
   padding: 1.5rem;
-
+  
   &__price {
     font-size: 2rem;
     margin-bottom: 2rem;
     text-align: center;
+
+    
     span {
       margin: 0 2rem;
     }

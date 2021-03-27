@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Route } from "react-router-dom";
+import { HashRouter, Route } from "react-router-dom";
 
 import MainPage from "./MainPage";
 import CoverPage from "./CoverPage";
@@ -7,12 +7,12 @@ import CoverPage from "./CoverPage";
 const App = () => {
     return (
         <div>
-            <BrowserRouter>
+            <HashRouter>
                 <div>
                     <Route path="/" exact component={CoverPage} />
                     <Route path="/main" component={MainPage} />
                 </div>
-            </BrowserRouter>
+            </HashRouter>
         </div>
     )
 }

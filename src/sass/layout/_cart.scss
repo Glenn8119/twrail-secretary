@@ -25,7 +25,9 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  overflow: auto;
+  overflow: scroll;
+  -webkit-overflow-scrolling: touch;
+  
 
   &__heading {
     margin: 2rem 0;

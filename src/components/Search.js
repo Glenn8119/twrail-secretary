@@ -98,6 +98,13 @@ const Search = ({ fetchTime, fetchPrice, getSelectedTime, getSelectedDate, isCar
         setTimeInput(e.target.value)
     }
 
+    const onExchangeClick = (e) => {
+        e.preventDefault(); //不要在交換值的時候搜尋
+        e.stopPropagation();
+        setStationID(DestinationStationID);
+        setDestinationStationID(StationID);
+    }
+
     return (
         <form className={`search ${isCartShow ? "search-move" : ""}`} onSubmit={onSubmit}>
             <div className="start-box">
@@ -112,7 +119,7 @@ const Search = ({ fetchTime, fetchPrice, getSelectedTime, getSelectedDate, isCar
                 </select>
             </div>
 
-            <button className="exchange__icon"><FontAwesomeIcon icon={faExchangeAlt} /></button>
+            <button className="exchange__icon" onClick={onExchangeClick}><FontAwesomeIcon icon={faExchangeAlt} /></button>
 
             <div className="end-box">
                 <label htmlFor="end-box__select">迄站</label>

@@ -13,6 +13,7 @@ const Footer = () => {
                 <p>資料介接「交通部PTX平臺」</p>
                 <img src={Ptx} alt="ptx-logo"></img>
             </div>
+
         </footer>
     )
 }

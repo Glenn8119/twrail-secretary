@@ -14,7 +14,7 @@ const CoverPage = () => {
     return (
         <div className="cover">
             <div className="bg-video">
-                <video className="bg-video__content" autoPlay loop muted >
+                <video className="bg-video__content" autoPlay loop muted playsInline>
                     <source src={video} type="video/mp4" />
                 Your browser is not supported!
                 </video>

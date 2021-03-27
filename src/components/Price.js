@@ -30,10 +30,11 @@ const Price = ({ price }) => {
         return (
             <section className="price">
                 <h2 className="heading-2">車廂票價參考</h2>
+
                 <table className="detail-price">
                     <thead className="detail-price__head">
                         <tr className="detail-price__head-row">
-                            <th></th>
+                            <th ></th>
                             <th>全票</th>
                             <th>孩童票/敬老票/愛心票</th>
                             <th>團體票</th>

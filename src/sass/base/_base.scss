@@ -31,6 +31,7 @@ $bp-smallest : 34.375em; //550px
 body{
     box-sizing: border-box;
     font-family: 'Noto Sans TC', sans-serif;
+    -webkit-overflow-scrolling: touch;
 }
 
 html{

@@ -23,6 +23,7 @@
     padding:3rem;
     padding-bottom: 1rem;
   }
+  
   &-move {
     transform: translateX(-60rem);
     
@@ -40,7 +41,9 @@
     color: white;
     border-radius: 5px;
     cursor: pointer;
-
+    @media only screen and (max-width: $bp-small) {
+      width:15rem;
+    }
   }
 }
 
@@ -57,7 +60,10 @@
     width:100%;
     flex-direction: row;
     justify-content: space-around;
+    align-items: center;
   }
+
+
 }
 
 .date-box{
@@ -83,6 +89,7 @@
 input,
 select {
   background-color: transparent;
+
 }
 
 .date-box {
@@ -130,6 +137,10 @@ select {
 
 label {
   font-size: 1.5rem;
+
+  @media only screen and (max-width: $bp-small) {
+    font-size:2.5rem;
+  }
 }
 
 .exchange__icon {

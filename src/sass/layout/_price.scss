@@ -5,7 +5,6 @@
   flex-direction: column;
   align-items: center;
   padding: 2rem 0;
-  
 
   .heading-2 {
     padding-bottom: 2rem;
@@ -28,12 +27,11 @@
 
 .detail-price {
   width: 100%;
-  @media only screen and (max-width:$bp-smallest){
+  @media only screen and (max-width: $bp-smallest) {
     // text-align: left;           /* 保证内容少时居中，内容多时左对齐 */
-    display: inline-block;      /* 保证内容少时居中，内容多时左对齐 */
+    display: inline-block; /* 保证内容少时居中，内容多时左对齐 */
     overflow: auto;
-
-}
+  }
   &__head,
   &__body {
     width: 100%;
@@ -64,17 +62,17 @@
     td {
       font-weight: 300;
       flex-grow: 2;
-      @media only screen and (max-width:$bp-smallest){
+      @media only screen and (max-width: $bp-smallest) {
         flex-grow: 0;
-    }
+      }
     }
     td:first-child {
       text-align: right;
       flex-grow: 1;
-      @media only screen and (max-width:$bp-smallest){
-        flex-grow:0;
+      @media only screen and (max-width: $bp-smallest) {
+        flex-grow: 0;
         text-align: center;
-    }
+      }
     }
   }
 
@@ -83,16 +81,4 @@
     width: 20rem;
     text-align: center;
   }
-}
-
-
-.content-fix{
-    text-align: left;           /* 保证内容少时居中，内容多时左对齐 */
-    display: inline-block;      /* 保证内容少时居中，内容多时左对齐 */
-    overflow-x: auto;           /* 长度溢出时显示横向滚动条 */
-    overflow-y: hidden;         /* 设置纵向滚动条不显示 */
-    white-space: nowrap;        /* 设置内容不换行 */
-     /* 文本居中 */
-    line-height: 55px; 
-    width:100%;
 }

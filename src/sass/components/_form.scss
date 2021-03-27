@@ -99,11 +99,6 @@ select {
 
 .date-box {
 
-  label{
-    @media only screen and (max-width: $bp-smallest) {
-      margin-right: 3rem;
-    }
-  }
   &__input {
     border: none;
     outline: none;
@@ -147,6 +142,7 @@ select {
 
 label {
   font-size: 1.5rem;
+  white-space: nowrap;
 
   @media only screen and (max-width: $bp-small) {
     font-size:2.5rem;

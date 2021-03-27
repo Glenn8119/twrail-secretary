@@ -93,13 +93,13 @@ const CartItems = ({ storageArr, setLocalStorage, item, index }) => {
                 <div className="item__middle-time"><span>{item.date}</span><span>{item.departureTime}</span></div>
                 <div className="item__middle-number">車次<span>{item.number}<span className="expired">{getTimeDifference(item) < 0 ? "(已過期)" : null}</span></span></div>
                 <div className="item__middle-price">$ {ticketPrice} 元</div>
-                <div className="item__select">
-                    <select className="item__select-seatType" onChange={onSeatTypeChange} value={item.seatType}>
+                <div className="item__middle-select">
+                    <select className="item__middle-select-seatType" onChange={onSeatTypeChange} value={item.seatType}>
                         <option value="normal">標準</option>
                         <option value="business">商務</option>
                         <option value="freeSeat">自由座</option>
                     </select>
-                    <select className="item__select-ticketType" onChange={onTicketTypeChange} value={item.ticketType}>
+                    <select className="item__middle-select-ticketType" onChange={onTicketTypeChange} value={item.ticketType}>
                         <option value="adult">全票</option>
                         <option value="old">敬老</option>
                         <option value="group">團體</option>

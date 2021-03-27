@@ -106,19 +106,6 @@
   padding: 1.5rem;
   font-size: 1.8rem;
 
-  &__select {
-    &-seatType {     
-      border-radius: 2px;
-      margin-right:1rem;
-      outline: none;
-    }
-
-    &-ticketType {
-      margin-left: 1rem;
-      outline: none;
-    }
-  }
-
   &__left {
     display: flex;
     flex-direction: column;
@@ -127,7 +114,7 @@
     justify-content: center;
     border: 1px solid grey;
     @media only screen and (max-width: $bp-smallest) {
-      width:10rem;
+      width:6rem;
     }
 
 
@@ -148,7 +135,7 @@
       flex-grow: 1;
       margin-left:2rem;
     }
-
+    
     &-time {
       font-size: 1.5rem;
       span:not(:last-child) {
@@ -161,6 +148,34 @@
     }
     &-price {
       font-weight: 500;
+    }
+    &-select {
+      &-seatType {     
+  
+        border-radius: 2px;
+        margin-right:1rem;
+        outline: none;
+        @media only screen and (max-width: $bp-smallest) {
+          width:14rem;
+          font-size:2.5rem;
+        }
+      }
+  
+      &-ticketType {
+        margin-left: 1rem;
+        outline: none;
+        @media only screen and (max-width: $bp-smallest) {
+          width:14rem;
+          font-size:2.5rem;
+        }
+      }
+    }
+    &-time,
+    &-number,
+    &-price,{
+      @media only screen and (max-width: $bp-smallest) {
+        font-size: 2.5rem;
+      }
     }
   }
   &__right {

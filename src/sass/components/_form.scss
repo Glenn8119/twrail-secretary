@@ -98,16 +98,21 @@ select {
 }
 
 .date-box {
+
+  label{
+    @media only screen and (max-width: $bp-smallest) {
+      margin-right: 3rem;
+    }
+  }
   &__input {
     border: none;
     outline: none;
     font-size: 2rem;
-    width: 18rem;
+    width: 15rem;
 
-    @media only screen and (max-width: $bp-medium) {
-      width: 20rem;
+    &::-webkit-calendar-picker-indicator {
+      margin-left: -5rem;
     }
-    
 
     &::-webkit-calendar-picker-indicator:hover {
       cursor: pointer;

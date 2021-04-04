@@ -37,8 +37,8 @@ const Search = ({ fetchTime, fetchPrice, getSelectedTime, getSelectedDate, isCar
     const [timeInput, setTimeInput] = useState(timeValue);
 
     //起訖站預設為南港到左營
-    const [StationID, setStationID] = useState("0990");
-    const [DestinationStationID, setDestinationStationID] = useState("1070")
+    const [StationID, setStationID] = useState("1043");
+    const [DestinationStationID, setDestinationStationID] = useState("1043")
 
     const renderOptions = () => {
         return options.map((option) => {

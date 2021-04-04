@@ -13,7 +13,7 @@ export const PtxPrice = axios.create({
 
 export const getAuthorizationHeader = function () {
     var AppID = '074a161350e14f9799c1a8bcf708cff4';
-    var AppKey = 'At3KeoDpHZ8hLfG2eULtUULEjoU';
+    var AppKey = '_b2XiYuGu2z87WK4SVzO8rRGDgM';
 
     var GMTString = new Date().toGMTString();
     var ShaObj = new jsSHA('SHA-1', 'TEXT');

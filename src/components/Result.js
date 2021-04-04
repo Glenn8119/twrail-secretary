@@ -9,7 +9,7 @@ const Result = ({ time, selectedTime, selectedDate, setShow, price, setLocalStor
 
     //設定預設要show的車次是在全部資料的哪個index
     const [currentArrIndexStart, setCurrentArrIndexStart] = useState(0);
-    const [currentArrIndexEnd, setCurrentArrIndexEnd] = useState(2);
+    const [currentArrIndexEnd, setCurrentArrIndexEnd] = useState(5);
 
     //從全部資料中挑選第一筆大於出發時間的班次
     let startItem = time.find((item) => checkTime(item.OriginStopTime.DepartureTime, selectedTime));

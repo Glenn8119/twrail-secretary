@@ -1,13 +1,13 @@
-//團體票規則
-function groupPrice(price) {
+//團體票規則: 95折之後個位數大於五則取5, 小於五則取0
+export function groupPrice(price) {
     if (price * 0.95 % 10 > 5) {
         return Math.round(price * 0.95 / 10) * 10 - 5;
     }
     return Math.round(price * 0.95 / 10) * 10
 }
 
-//敬老票規則
-function oldPrice(price) {
+//敬老票規則: 半價之後個位數大於五則取5, 小於五則取0
+export function oldPrice(price) {
     if (price * 0.5 % 10 > 5) {
         return Math.round(price * 0.5 / 10) * 10 - 5;
     }
@@ -53,8 +53,8 @@ export function getTimeDifference(train) {
 }
 
 //為了比較哪一班車是離現在時間最近的, 必須將資料傳換成時間毫秒
-export function changeTimeToMillisecond(trainObj){
-    if(trainObj){
+export function changeTimeToMillisecond(trainObj) {
+    if (trainObj) {
         let trainDateArr = trainObj.date.split("-");
         let trainTimeArr = trainObj.departureTime.split(":");
         return new Date(trainDateArr[0], trainDateArr[1] - 1, trainDateArr[2], ...trainTimeArr).getTime();
@@ -62,8 +62,8 @@ export function changeTimeToMillisecond(trainObj){
 }
 
 //找出arr中最小的正數的item
-export function findValidMinimumItem(arr){
+export function findValidMinimumItem(arr) {
     let nowTime = new Date().getTime();
-    let positiveArr = arr.filter((item)=> item - nowTime > 0);
+    let positiveArr = arr.filter((item) => item - nowTime > 0);
     return Math.min(...positiveArr);
 }

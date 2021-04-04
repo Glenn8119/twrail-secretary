@@ -54,9 +54,7 @@ const CartItems = ({ storageArr, setLocalStorage, item, index }) => {
         let Obj = { ...item }
         //拷貝陣列
         let Arr = [...storageArr]
-        //數字+1
         Obj.ticketNumber += 1;
-        //更新Arr
         Arr[index] = Obj;
         //更新Localstorage
         localStorage.setItem("dataList", JSON.stringify(Arr));

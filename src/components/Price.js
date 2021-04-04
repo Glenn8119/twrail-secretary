@@ -1,24 +1,9 @@
 import React, { Fragment } from "react";
-import { connect } from "react-redux"
+import { connect } from "react-redux";
+
+import { groupPrice, oldPrice } from "./calculating";
 
 const Price = ({ price }) => {
-
-    //團體票規則
-    function groupPrice(price) {
-        if (price * 0.95 % 10 > 5) {
-            return Math.round(price * 0.95 / 10) * 10 - 5;
-        }
-        return Math.round(price * 0.95 / 10) * 10
-    }
-
-    //敬老票規則
-    function oldPrice(price) {
-        if (price * 0.5 % 10 > 5) {
-            return Math.round(price * 0.5 / 10) * 10 - 5;
-        }
-        return Math.round(price * 0.5 / 10) * 10
-    }
-
 
     const renderDetail = () => {
 

@@ -29,13 +29,12 @@ const Search = ({ fetchTime, fetchPrice, getSelectedTime, getSelectedDate, isCar
 
     const dateValue = changeDateForm(date);
     const maxDateValue = changeDateForm(maxDate);
-    //將時間轉換成 HH:MM:SS格式
+    //將當下時間轉換成 HH:MM:SS格式
     const timeValue = `${h < 10 ? "0" + h : h}:${mi < 10 ? "0" + mi : mi}`
 
     //預設日期時間為當下
     const [dateInput, setDateInput] = useState(dateValue);
     const [timeInput, setTimeInput] = useState(timeValue);
-
 
     //起訖站預設為南港到左營
     const [StationID, setStationID] = useState("0990");

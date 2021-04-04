@@ -7,11 +7,11 @@ import { checkTime } from "./calculating";
 
 const Result = ({ time, selectedTime, selectedDate, setShow, price, setLocalStorage, storageArr, cartState }) => {
 
-    //設定預設要show的車次index
+    //設定預設要show的車次是在全部資料的哪個index
     const [currentArrIndexStart, setCurrentArrIndexStart] = useState(0);
-    const [currentArrIndexEnd, setCurrentArrIndexEnd] = useState(5);
+    const [currentArrIndexEnd, setCurrentArrIndexEnd] = useState(2);
 
-    //挑選大於出發時間的班次
+    //從全部資料中挑選第一筆大於出發時間的班次
     let startItem = time.find((item) => checkTime(item.OriginStopTime.DepartureTime, selectedTime));
 
     useEffect(() => {
@@ -49,8 +49,8 @@ const Result = ({ time, selectedTime, selectedDate, setShow, price, setLocalStor
         // 數量
         dataListObj.ticketNumber = 1;
 
-        dataArr.push(dataListObj);
         //先把新的資料更新到local storage上
+        dataArr.push(dataListObj);
         localStorage.setItem("dataList", JSON.stringify(dataArr));
 
         //再把localstorage的資料更新到localStorageReducer上

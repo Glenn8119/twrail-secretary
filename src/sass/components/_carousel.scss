@@ -7,7 +7,7 @@
 
 .items{
     display:flex;
-    width:500%;
+    width:300%;
     height:100%;
     border-radius: 1rem;
 
@@ -17,7 +17,7 @@
     }
 
     .item{
-        width:20%;
+        width:33.3333%;
         height:100%;
         background-size: cover;
         background-position: center;
@@ -63,5 +63,5 @@
 }
 
 #btn1:checked ~ .first{ margin-left:0}
-#btn2:checked ~ .first{ margin-left:-20%}
-#btn3:checked ~ .first{ margin-left:-40%}
+#btn2:checked ~ .first{ margin-left:-33.3333%}
+#btn3:checked ~ .first{ margin-left:-66.6666%}

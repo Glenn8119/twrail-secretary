@@ -10,7 +10,7 @@ import CartItems from "./CartItems";
 const Cart = ({ cartState, setNotShow, storageArr, setLocalStorage }) => {
 
     const refCart = useRef();
-    //點擊其他地方會收起cart
+    //點擊購物車以外其他地方會收起cart
     document.addEventListener("click", (e)=>{
         if(refCart.current && !refCart.current.contains(e.target)){
             setNotShow();
@@ -18,12 +18,14 @@ const Cart = ({ cartState, setNotShow, storageArr, setLocalStorage }) => {
         return 
     })
 
+    //想要分別管理每一個item裡面的票種狀態,因此將每個購物車item用另一個component顯示
     const renderDetail = storageArr ? storageArr.map((item, index) => {
         return (
             <CartItems item={item} index={index} key={index} />
         )
     }) : null;
 
+    //清空購物車
     const onClickClear = () => {
         let arr = [];
         //更新Localstorage
@@ -38,7 +40,7 @@ const Cart = ({ cartState, setNotShow, storageArr, setLocalStorage }) => {
     //抓出尚未過期且最小的一班車的index
     let targetIndex = timeArr.indexOf(findValidMinimumItem(timeArr));
 
-    //計算該車次發車時間與目前時間差
+    //計算該車次發車時間與現在時間差
     let TimeDifference = getTimeDifference(storageArr[targetIndex]);
     let daysLeft = TimeDifference ? Math.floor(TimeDifference.getTime() / 3600000 / 24) : "-";
     let hoursLeft = TimeDifference ? TimeDifference.getUTCHours() : "-";

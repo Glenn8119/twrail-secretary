@@ -58,7 +58,7 @@ const Search = ({ fetchTime, fetchPrice, getSelectedTime, getSelectedDate, isCar
         const m = date.getMonth();
         const d = date.getDate();
 
-        return `${y}-${m < 9 ? "0" + (m + 1) : m + 1}-${d < 9 ? "0" + d : d}`
+        return `${y}-${m < 9 ? "0" + (m + 1) : m + 1}-${d <= 9 ? "0" + d : d}`
     }
 
     function onSubmit(e) {

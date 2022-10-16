@@ -24,5 +24,3 @@ export const getAuthorizationHeader = function () {
 
     return { 'Authorization': Authorization, 'X-Date': GMTString };
 }
-
-// /v2/Rail/THSR/ODFare/{OriginStationID}/to/{DestinationStationID}

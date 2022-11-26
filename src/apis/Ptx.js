@@ -1,26 +1,34 @@
-import axios from "axios";
-import jsSHA from "jssha";
+import axios from 'axios'
 
 export const PtxTime = axios.create({
-        baseURL: "https://ptx.transportdata.tw/MOTC/v2/Rail/THSR/DailyTimetable/OD"
-    })
+  baseURL: 'https://ptx.transportdata.tw/MOTC/v2/Rail/THSR/DailyTimetable/OD'
+})
 
 export const PtxPrice = axios.create({
-        baseURL: "https://ptx.transportdata.tw/MOTC/v2/Rail/THSR"
-    })
+  baseURL: 'https://ptx.transportdata.tw/MOTC/v2/Rail/THSR'
+})
 
+export function GetAuthorizationHeader() {
+  const parameter = {
+    grant_type: 'client_credentials',
+    client_id: 'uuu0622-f6bf76dc-fdbe-42b6',
+    client_secret: 'ccbdaf2d-bf90-457a-88cc-271c2ea8b1fa'
+  }
 
+  const auth_url =
+    'https://tdx.transportdata.tw/auth/realms/TDXConnect/protocol/openid-connect/token'
 
-export const getAuthorizationHeader = function () {
-    var AppID = '074a161350e14f9799c1a8bcf708cff4';
-    var AppKey = '_b2XiYuGu2z87WK4SVzO8rRGDgM';
-
-    var GMTString = new Date().toGMTString();
-    var ShaObj = new jsSHA('SHA-1', 'TEXT');
-    ShaObj.setHMACKey(AppKey, 'TEXT');
-    ShaObj.update('x-date: ' + GMTString);
-    var HMAC = ShaObj.getHMAC('B64');
-    var Authorization = 'hmac username="' + AppID + '", algorithm="hmac-sha1", headers="x-date", signature="' + HMAC + '"';
-
-    return { 'Authorization': Authorization, 'X-Date': GMTString };
+  return axios({
+    url: auth_url,
+    method: 'POST',
+    data: new URLSearchParams(parameter),
+    headers: {
+      'content-Type': 'application/x-www-form-urlencoded'
+    }
+  }).then((res) => {
+    const timeStamp = new Date().getTime()
+    const token = res.data.access_token
+    localStorage.setItem('tokenRecord', JSON.stringify({ timeStamp, token }))
+    return res
+  })
 }

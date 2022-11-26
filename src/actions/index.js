@@ -1,18 +1,31 @@
-import { PtxPrice, PtxTime, getAuthorizationHeader } from "../apis/Ptx";
+import { PtxPrice, PtxTime, GetAuthorizationHeader } from "../apis/Ptx";
+import { checkToken } from '../utils';
 
 export const fetchTime = (OriginStationID, DestinationStationID, TrainDate) => async dispatch => {
+    let token = checkToken()
+    if (!token) {
+        token = await GetAuthorizationHeader().access_token
+    }
     const response = await PtxTime.get(`/${OriginStationID}/to/${DestinationStationID}/${TrainDate}?&$format=JSON`,
         {
-            headers: getAuthorizationHeader()
+            headers: {
+                "authorization": "Bearer " + token, 
+            }
         })
 
     dispatch({ type: "FETCH_TIME", payload: response.data })
 }
 
 export const fetchPrice = (OriginStationID, DestinationStationID) => async dispatch => {
+    let token = checkToken()
+    if (!token) {
+        token = await GetAuthorizationHeader().access_token
+    }
     const response = await PtxPrice.get(`/ODFare/${OriginStationID}/to/${DestinationStationID}`,
         {
-            headers: getAuthorizationHeader()
+            headers: {
+                "authorization": "Bearer " + token, 
+            }
         })
 
     dispatch({ type: "FETCH_PRICE", payload: response.data })

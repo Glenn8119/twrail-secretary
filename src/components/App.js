@@ -1,22 +1,20 @@
-import React from "react";
-import { HashRouter, Route } from "react-router-dom";
+import React from 'react'
+import { HashRouter, Route } from 'react-router-dom'
 
-import MainPage from "./MainPage";
-import CoverPage from "./CoverPage";
+import MainPage from './MainPage'
+import CoverPage from './CoverPage'
 
 const App = () => {
-    return (
+  return (
+    <div>
+      <HashRouter>
         <div>
-            <HashRouter>
-                <div>
-                    <Route path="/" exact component={CoverPage} />
-                    <Route path="/main" component={MainPage} />
-                </div>
-            </HashRouter>
+          <Route path='/' exact component={CoverPage} />
+          <Route path='/main' component={MainPage} />
         </div>
-    )
+      </HashRouter>
+    </div>
+  )
 }
 
-
-export default App;
-
+export default App

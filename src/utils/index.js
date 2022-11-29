@@ -10,3 +10,12 @@ export const checkToken = () => {
     }
   }
 }
+
+//將日期轉換成 YY-MM-DD格式
+export function changeDateForm(date) {
+  const y = date.getFullYear()
+  const m = date.getMonth()
+  const d = date.getDate()
+
+  return `${y}-${m < 9 ? '0' + (m + 1) : m + 1}-${d <= 9 ? '0' + d : d}`
+}

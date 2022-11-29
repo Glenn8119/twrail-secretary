@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faExchangeAlt } from '@fortawesome/free-solid-svg-icons'
 import { connect } from 'react-redux'
@@ -8,8 +8,9 @@ import {
   getSelectedTime,
   getSelectedDate
 } from '../actions'
+import { changeDateForm } from '../utils'
 
-let options = [
+const options = [
   { name: '南港', id: '0990' },
   { name: '臺北', id: '1000' },
   { name: '板橋', id: '1010' },
@@ -24,6 +25,19 @@ let options = [
   { name: '左營', id: '1070' }
 ]
 
+const week = ['日', '一', '二', '三', '四', '五', '六']
+
+const date = new Date()
+const h = date.getHours()
+const m = date.getMinutes()
+
+// 最多僅能選一個月內時間
+const maxDate = new Date(date.getTime() + 1000 * 60 * 60 * 24 * 28)
+const DEFAULT_DATE = changeDateForm(date)
+const MAX_DATE = changeDateForm(maxDate)
+//將當下時間轉換成 HH:MM:SS格式
+const DEFAULT_TIME = `${h < 10 ? '0' + h : h}:${m < 10 ? '0' + m : m}`
+
 const Search = ({
   fetchTime,
   fetchPrice,
@@ -31,25 +45,15 @@ const Search = ({
   getSelectedDate,
   cartInfo
 }) => {
-  const date = new Date()
-  const maxDate = new Date(date.getTime() + 1000 * 60 * 60 * 24 * 28)
-  const h = date.getHours()
-  const mi = date.getMinutes()
-
-  const dateValue = changeDateForm(date)
-  const maxDateValue = changeDateForm(maxDate)
-  //將當下時間轉換成 HH:MM:SS格式
-  const timeValue = `${h < 10 ? '0' + h : h}:${mi < 10 ? '0' + mi : mi}`
-
   //預設日期時間為當下
-  const [dateInput, setDateInput] = useState(dateValue)
-  const [timeInput, setTimeInput] = useState(timeValue)
+  const [dateInput, setDateInput] = useState(DEFAULT_DATE)
+  const [timeInput, setTimeInput] = useState(DEFAULT_TIME)
 
   //起訖站預設為南港到左營
-  const [StationID, setStationID] = useState('1043')
-  const [DestinationStationID, setDestinationStationID] = useState('1043')
+  const [StationID, setStationID] = useState('0990')
+  const [DestinationStationID, setDestinationStationID] = useState('1070')
 
-  const renderOptions = () => {
+  const renderOptions = useCallback(() => {
     return options.map((option) => {
       return (
         <option key={option.id} value={option.id}>
@@ -57,20 +61,9 @@ const Search = ({
         </option>
       )
     })
-  }
+  }, [])
 
-  //取得所選的日期和時間
-  const week = ['日', '一', '二', '三', '四', '五', '六']
   const weekValue = week[new Date(dateInput).getDay()]
-
-  //將日期轉換成 YY-MM-DD格式
-  function changeDateForm(date) {
-    const y = date.getFullYear()
-    const m = date.getMonth()
-    const d = date.getDate()
-
-    return `${y}-${m < 9 ? '0' + (m + 1) : m + 1}-${d <= 9 ? '0' + d : d}`
-  }
 
   function onSubmit(e) {
     e.preventDefault()
@@ -153,8 +146,8 @@ const Search = ({
           value={dateInput}
           onChange={onDateSelectChange}
           className='date-box__input'
-          min={dateValue}
-          max={maxDateValue}
+          min={DEFAULT_DATE}
+          max={MAX_DATE}
         />
       </div>
 

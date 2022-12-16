@@ -1,16 +1,16 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faShoppingCart } from '@fortawesome/free-solid-svg-icons'
-import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
-import React, { useEffect, useCallback } from 'react'
-import Search from './Search'
-import Result from './Result'
-import Carousel from './Carousel'
-import Price from './Price'
-import Cart from './Cart'
-import Footer from './Footer'
-import { setShow, setCartDetail } from '../actions'
+import React, { useEffect, useCallback } from 'react';
+import Search from './components/Search';
+import Result from './components/Result';
+import Carousel from './components/Carousel';
+import Price from './components/Price';
+import Cart from './components/Cart';
+import Footer from './components/Footer';
+import { setShow, setCartDetail } from '../../actions';
 
 const links = [
   {
@@ -21,25 +21,25 @@ const links = [
     href: 'https://irs.thsrc.com.tw/IMINT/?locale=tw',
     text: '官網介紹'
   }
-]
+];
 
 const MainPage = ({ setShow, cartInfo, setCartDetail }) => {
   // 如果原本localstorage就有資料的話就先讀取
   useEffect(() => {
-    const storageData = JSON.parse(localStorage.getItem('cartDetail'))
+    const storageData = JSON.parse(localStorage.getItem('cartDetail'));
     if (storageData) {
-      setCartDetail(storageData)
+      setCartDetail(storageData);
     }
-  }, [setCartDetail])
+  }, [setCartDetail]);
 
   const onClick = (e) => {
-    setShow()
-    e.stopPropagation()
-  }
+    setShow();
+    e.stopPropagation();
+  };
 
   const onLogoClick = (e) => {
-    e.stopPropagation()
-  }
+    e.stopPropagation();
+  };
 
   const renderLinks = useCallback(
     () =>
@@ -55,10 +55,10 @@ const MainPage = ({ setShow, cartInfo, setCartDetail }) => {
               {link.text}
             </a>
           </li>
-        )
+        );
       }),
     []
-  )
+  );
 
   return (
     <div className='container'>
@@ -85,13 +85,13 @@ const MainPage = ({ setShow, cartInfo, setCartDetail }) => {
 
       <Footer />
     </div>
-  )
-}
+  );
+};
 
 const mapStateToProps = (state) => {
   return {
     cartInfo: state.cartInfo
-  }
-}
+  };
+};
 
-export default connect(mapStateToProps, { setShow, setCartDetail })(MainPage)
+export default connect(mapStateToProps, { setShow, setCartDetail })(MainPage);

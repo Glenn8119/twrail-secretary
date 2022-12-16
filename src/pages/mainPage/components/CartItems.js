@@ -1,87 +1,87 @@
-import React from 'react'
-import { connect } from 'react-redux'
-import { getTicketPrice, getTimeDifference } from './calculating'
+import React from 'react';
+import { connect } from 'react-redux';
+import { getTicketPrice, getTimeDifference } from './calculating';
 
-import { setCartDetail } from '../actions'
+import { setCartDetail } from '../../../actions';
 
 const CartItems = ({ cartInfo, setCartDetail, item, index }) => {
-  const { detail } = cartInfo
+  const { detail } = cartInfo;
   //改變票種的同時儲存到redux以及localstorage
   const onTicketTypeChange = (e) => {
     //人數低於11人不能選團體票 && 自由座不能選團體票
     if (item.ticketNumber < 11 && e.target.value === 'group') {
-      alert('選擇團體票人數須至少11人')
-      return
+      alert('選擇團體票人數須至少11人');
+      return;
     } else if (item.seatType === 'freeSeat' && e.target.value === 'group') {
-      alert('自由座無販售團體票')
-      return
+      alert('自由座無販售團體票');
+      return;
     }
 
-    let Arr = [...detail]
-    let Obj = { ...item }
-    Obj.ticketType = e.target.value
-    Arr[index] = Obj
-    localStorage.setItem('cartDetail', JSON.stringify(Arr))
-    setCartDetail(Arr)
-  }
+    let Arr = [...detail];
+    let Obj = { ...item };
+    Obj.ticketType = e.target.value;
+    Arr[index] = Obj;
+    localStorage.setItem('cartDetail', JSON.stringify(Arr));
+    setCartDetail(Arr);
+  };
   //改變票種的同時儲存到redux以及localstorage
   const onSeatTypeChange = (e) => {
     if (item.ticketType === 'group' && e.target.value === 'freeSeat') {
-      alert('自由座無販售團體票')
-      return
+      alert('自由座無販售團體票');
+      return;
     }
 
-    let Arr = [...detail]
-    let Obj = { ...item }
-    Obj.seatType = e.target.value
-    Arr[index] = Obj
-    localStorage.setItem('cartDetail', JSON.stringify(Arr))
-    setCartDetail(Arr)
-  }
+    let Arr = [...detail];
+    let Obj = { ...item };
+    Obj.seatType = e.target.value;
+    Arr[index] = Obj;
+    localStorage.setItem('cartDetail', JSON.stringify(Arr));
+    setCartDetail(Arr);
+  };
 
   const onClickDelete = (e) => {
-    e.stopPropagation()
+    e.stopPropagation();
     // 刪除該項目
     let updatedArr = detail.filter(
-      (item) => detail.indexOf(item) != e.target.id
-    )
+      (item) => detail.indexOf(item) !== e.target.id
+    );
     //更新LocalStorage
-    localStorage.setItem('cartDetail', JSON.stringify(updatedArr))
+    localStorage.setItem('cartDetail', JSON.stringify(updatedArr));
     //儲存到reducer
-    setCartDetail(JSON.parse(localStorage.getItem('cartDetail')))
-  }
+    setCartDetail(JSON.parse(localStorage.getItem('cartDetail')));
+  };
 
   const onClickUp = (item) => {
     //拷貝該物件
-    let Obj = { ...item }
+    let Obj = { ...item };
     //拷貝陣列
-    let Arr = [...detail]
-    Obj.ticketNumber += 1
-    Arr[index] = Obj
+    let Arr = [...detail];
+    Obj.ticketNumber += 1;
+    Arr[index] = Obj;
     //更新Localstorage
-    localStorage.setItem('cartDetail', JSON.stringify(Arr))
+    localStorage.setItem('cartDetail', JSON.stringify(Arr));
     //儲存到reducer
-    setCartDetail(JSON.parse(localStorage.getItem('cartDetail')))
-  }
+    setCartDetail(JSON.parse(localStorage.getItem('cartDetail')));
+  };
 
   const onClickDown = (item) => {
     //團體票人數須大於11人
     if (item.ticketNumber === 11 && item.ticketType === 'group') {
-      alert('團體票人數須大於11人, 若要減少張數請選擇其他票種')
-      return
+      alert('團體票人數須大於11人, 若要減少張數請選擇其他票種');
+      return;
     }
 
-    let Obj = { ...item }
-    let Arr = [...detail]
+    let Obj = { ...item };
+    let Arr = [...detail];
     if (Obj.ticketNumber > 1) {
-      Obj.ticketNumber -= 1
-      Arr[index] = Obj
-      localStorage.setItem('cartDetail', JSON.stringify(Arr))
-      setCartDetail(JSON.parse(localStorage.getItem('cartDetail')))
+      Obj.ticketNumber -= 1;
+      Arr[index] = Obj;
+      localStorage.setItem('cartDetail', JSON.stringify(Arr));
+      setCartDetail(JSON.parse(localStorage.getItem('cartDetail')));
     }
-  }
+  };
 
-  let ticketPrice = getTicketPrice(item)
+  let ticketPrice = getTicketPrice(item);
 
   return (
     <div className='item'>
@@ -140,13 +140,13 @@ const CartItems = ({ cartInfo, setCartDetail, item, index }) => {
         id={index}
       ></button>
     </div>
-  )
-}
+  );
+};
 
 const mapStateToProps = (state) => {
   return {
     cartInfo: state.cartInfo
-  }
-}
+  };
+};
 
-export default connect(mapStateToProps, { setCartDetail })(CartItems)
+export default connect(mapStateToProps, { setCartDetail })(CartItems);

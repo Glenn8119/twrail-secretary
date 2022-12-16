@@ -30,7 +30,10 @@
     "extends": [
       "react-app",
       "react-app/jest"
-    ]
+    ],
+    "rules": {
+      "comma-dangle": ["error", "never"]
+    }
   },
   "browserslist": {
     "production": [

@@ -1,14 +1,14 @@
-import video from '../video/video.mp4'
-import React from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTrain, faHandPointer } from '@fortawesome/free-solid-svg-icons'
+import video from './video/video.mp4';
+import React from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrain, faHandPointer } from '@fortawesome/free-solid-svg-icons';
 
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
 
 const CoverPage = () => {
   const onClick = (e) => {
-    e.stopPropagation()
-  }
+    e.stopPropagation();
+  };
   return (
     <div className='cover'>
       <div className='bg-video'>
@@ -40,7 +40,7 @@ const CoverPage = () => {
         </Link>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default CoverPage
+export default CoverPage;

@@ -1,8 +1,8 @@
-import React from 'react'
-import { HashRouter, Route } from 'react-router-dom'
+import React from 'react';
+import { HashRouter, Route } from 'react-router-dom';
 
-import MainPage from './MainPage'
-import CoverPage from './CoverPage'
+import MainPage from './pages/mainPage';
+import CoverPage from './pages/coverPage';
 
 const App = () => {
   return (
@@ -14,7 +14,7 @@ const App = () => {
         </div>
       </HashRouter>
     </div>
-  )
-}
+  );
+};
 
-export default App
+export default App;

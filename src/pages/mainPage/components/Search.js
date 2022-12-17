@@ -10,7 +10,7 @@ import {
 } from '../../../actions';
 import { changeDateForm } from '../../../utils';
 
-const options = [
+const destOptions = [
   { name: '南港', id: '0990' },
   { name: '臺北', id: '1000' },
   { name: '板橋', id: '1010' },
@@ -35,7 +35,6 @@ const m = date.getMinutes();
 const maxDate = new Date(date.getTime() + 1000 * 60 * 60 * 24 * 28);
 const DEFAULT_DATE = changeDateForm(date);
 const MAX_DATE = changeDateForm(maxDate);
-//將當下時間轉換成 HH:MM:SS格式
 const DEFAULT_TIME = `${h < 10 ? '0' + h : h}:${m < 10 ? '0' + m : m}`;
 
 const Search = ({
@@ -50,11 +49,13 @@ const Search = ({
   const [timeInput, setTimeInput] = useState(DEFAULT_TIME);
 
   //起訖站預設為南港到左營
-  const [StationID, setStationID] = useState('0990');
-  const [DestinationStationID, setDestinationStationID] = useState('1070');
+  const [stationID, setStationID] = useState(destOptions[0].id);
+  const [DestinationStationID, setDestinationStationID] = useState(
+    destOptions[destOptions.length - 1].id
+  );
 
   const renderOptions = useCallback(() => {
-    return options.map((option) => {
+    return destOptions.map((option) => {
       return (
         <option key={option.id} value={option.id}>
           {option.name}
@@ -63,46 +64,41 @@ const Search = ({
     });
   }, []);
 
-  const weekValue = week[new Date(dateInput).getDay()];
-
   function onSubmit(e) {
     e.preventDefault();
 
-    if (StationID === DestinationStationID) {
+    if (stationID === DestinationStationID) {
       alert('出發站不可等於到達站');
     }
 
-    fetchTime(StationID, DestinationStationID, dateInput);
-    fetchPrice(StationID, DestinationStationID);
+    const weekValue = week[new Date(dateInput).getDay()];
+
+    fetchTime(stationID, DestinationStationID, dateInput);
+    fetchPrice(stationID, DestinationStationID);
     getSelectedTime(timeInput);
     getSelectedDate(`${dateInput}(${weekValue})`);
   }
 
   const onOriginStopChange = (e) => {
-    e.stopPropagation();
     setStationID(e.target.value);
   };
 
   const onDestinationStopChange = (e) => {
-    e.stopPropagation();
     setDestinationStationID(e.target.value);
   };
 
   const onDateSelectChange = (e) => {
-    e.stopPropagation();
     setDateInput(e.target.value);
   };
 
   const onTimeSelectChange = (e) => {
-    e.stopPropagation();
     setTimeInput(e.target.value);
   };
 
   const onExchangeClick = (e) => {
-    e.preventDefault(); //不要在交換值的時候搜尋
-    e.stopPropagation();
+    e.preventDefault();
     setStationID(DestinationStationID);
-    setDestinationStationID(StationID);
+    setDestinationStationID(stationID);
   };
 
   return (
@@ -115,7 +111,7 @@ const Search = ({
         <select
           id='start-box__select'
           className='start-box__select'
-          value={StationID}
+          value={stationID}
           onChange={onOriginStopChange}
         >
           {renderOptions()}
@@ -162,16 +158,13 @@ const Search = ({
         />
       </div>
 
-      <button className='search__btn' onClick={(e) => e.stopPropagation()}>
-        查詢
-      </button>
+      <button className='search__btn'>查詢</button>
     </form>
   );
 };
 
 const mapStateToProps = (state) => {
   return {
-    time: state.time,
     price: state.price,
     cartInfo: state.cartInfo
   };

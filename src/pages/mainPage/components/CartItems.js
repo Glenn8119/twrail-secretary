@@ -1,8 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { getTicketPrice, getTimeDifference } from './calculating';
-
 import { setCartDetail } from '../../../actions';
+import { getTicketPrice, getTimeDifference } from '../../../utils';
 
 const CartItems = ({ cartInfo, setCartDetail, item, index }) => {
   const { detail } = cartInfo;
@@ -17,11 +16,10 @@ const CartItems = ({ cartInfo, setCartDetail, item, index }) => {
       return;
     }
 
-    let Arr = [...detail];
-    let Obj = { ...item };
+    const Arr = [...detail];
+    const Obj = { ...item };
     Obj.ticketType = e.target.value;
     Arr[index] = Obj;
-    localStorage.setItem('cartDetail', JSON.stringify(Arr));
     setCartDetail(Arr);
   };
   //改變票種的同時儲存到redux以及localstorage
@@ -31,37 +29,31 @@ const CartItems = ({ cartInfo, setCartDetail, item, index }) => {
       return;
     }
 
-    let Arr = [...detail];
-    let Obj = { ...item };
+    const Arr = [...detail];
+    const Obj = { ...item };
     Obj.seatType = e.target.value;
     Arr[index] = Obj;
-    localStorage.setItem('cartDetail', JSON.stringify(Arr));
     setCartDetail(Arr);
   };
 
   const onClickDelete = (e) => {
     e.stopPropagation();
     // 刪除該項目
-    let updatedArr = detail.filter(
+    const updatedArr = detail.filter(
       (item) => detail.indexOf(item) !== e.target.id
     );
-    //更新LocalStorage
-    localStorage.setItem('cartDetail', JSON.stringify(updatedArr));
-    //儲存到reducer
-    setCartDetail(JSON.parse(localStorage.getItem('cartDetail')));
+
+    setCartDetail(updatedArr);
   };
 
   const onClickUp = (item) => {
     //拷貝該物件
-    let Obj = { ...item };
+    const Obj = { ...item };
     //拷貝陣列
-    let Arr = [...detail];
+    const Arr = [...detail];
     Obj.ticketNumber += 1;
     Arr[index] = Obj;
-    //更新Localstorage
-    localStorage.setItem('cartDetail', JSON.stringify(Arr));
-    //儲存到reducer
-    setCartDetail(JSON.parse(localStorage.getItem('cartDetail')));
+    setCartDetail(Arr);
   };
 
   const onClickDown = (item) => {
@@ -71,17 +63,16 @@ const CartItems = ({ cartInfo, setCartDetail, item, index }) => {
       return;
     }
 
-    let Obj = { ...item };
-    let Arr = [...detail];
+    const Obj = { ...item };
+    const Arr = [...detail];
     if (Obj.ticketNumber > 1) {
       Obj.ticketNumber -= 1;
       Arr[index] = Obj;
-      localStorage.setItem('cartDetail', JSON.stringify(Arr));
-      setCartDetail(JSON.parse(localStorage.getItem('cartDetail')));
+      setCartDetail(Arr);
     }
   };
 
-  let ticketPrice = getTicketPrice(item);
+  const ticketPrice = getTicketPrice(item);
 
   return (
     <div className='item'>

@@ -1,12 +1,30 @@
-import React, { Fragment, useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
-import { setShow, setNotShow, setCartDetail } from '../../../actions';
+import { setShow, setCartDetail } from '../../../actions';
 import { connect } from 'react-redux';
-import { checkTime } from './calculating';
+
+//檢驗t1是否大於t2
+const laterThan = (t1, t2) => {
+  const t1Arr = t1.split(':');
+  const t2Arr = t2.split(':');
+  return t1Arr[0] * 60 + t1Arr[1] - (t2Arr[0] * 60 + t2Arr[1]) > 0;
+};
+
+//計算行車時間轉換成HH:MM:SS格式
+function calculateTime(DepartureTime, ArrivalTime) {
+  const DepartureArr = DepartureTime.split(':');
+  const ArrivalArr = ArrivalTime.split(':');
+
+  const hourDiff = ArrivalArr[0] - DepartureArr[0];
+  const minuteDiff = ArrivalArr[1] - DepartureArr[1];
+
+  if (minuteDiff < 0) return `${hourDiff - 1}:${minuteDiff + 60}`;
+  else return `${hourDiff}:${minuteDiff}`;
+}
 
 const Result = ({
-  time,
+  timeTable,
   selectedTime,
   selectedDate,
   setShow,
@@ -14,114 +32,70 @@ const Result = ({
   setCartDetail,
   cartInfo
 }) => {
-  //設定預設要show的車次是在全部資料的哪個index
-  const [currentArrIndexStart, setCurrentArrIndexStart] = useState(0);
-  const [currentArrIndexEnd, setCurrentArrIndexEnd] = useState(5);
-
-  //從全部資料中挑選第一筆大於出發時間的班次
-  let startItem = time.find((item) =>
-    checkTime(item.OriginStopTime.DepartureTime, selectedTime)
-  );
+  const [startIdxOffset, setStartIdxOffset] = useState(0);
 
   useEffect(() => {
-    setCurrentArrIndexStart(time.indexOf(startItem));
-    setCurrentArrIndexEnd(time.indexOf(startItem) + 5);
-  }, [time, startItem]);
+    setStartIdxOffset(0);
+  }, [timeTable]);
 
-  //點擊icon儲存資料至LOCAL STORAGE
-  const onClick = (e) => {
+  const startItem = timeTable.find((item) =>
+    laterThan(item.OriginStopTime.DepartureTime, selectedTime)
+  );
+  const startIdx = timeTable.indexOf(startItem) + startIdxOffset;
+  const endIdx = startIdx + 5;
+
+  const handleTicketClick = (e, index) => {
+    // stop cart from not showing
     e.stopPropagation();
-    const btnId = e.target.id;
-    const data = timeArr[btnId];
-    let dataArr = cartInfo.detail ? [...cartInfo.detail] : [];
-    let cartDetailObj = {};
 
-    // 起站
-    cartDetailObj.originStop = data.OriginStopTime.StationName.Zh_tw;
-    // 迄站
-    cartDetailObj.destinationStop = data.DestinationStopTime.StationName.Zh_tw;
-    // 車次
-    cartDetailObj.number = data.DailyTrainInfo.TrainNo;
-    // 日期
-    cartDetailObj.date = data.TrainDate;
-    // 時間
-    cartDetailObj.departureTime = data.OriginStopTime.DepartureTime;
-    // 費用
-    cartDetailObj.price = {
-      business: price[0].Fares[0].Price,
-      normal: price[0].Fares[1].Price,
-      freeSeat: price[0].Fares[2].Price
+    const ticket = resultArr[index];
+    const clonedCartDetail = cartInfo.detail ? [...cartInfo.detail] : [];
+    const ticketInfo = {
+      originStop: ticket.OriginStopTime.StationName.Zh_tw,
+      destinationStop: ticket.DestinationStopTime.StationName.Zh_tw,
+      number: ticket.DailyTrainInfo.TrainNo,
+      date: ticket.TrainDate,
+      departureTime: ticket.OriginStopTime.DepartureTime,
+      price: {
+        business: price[0].Fares[0].Price,
+        normal: price[0].Fares[1].Price,
+        freeSeat: price[0].Fares[2].Price
+      },
+      ticketType: 'adult',
+      seatType: 'normal',
+      ticketNumber: 1
     };
-    // 票種
-    cartDetailObj.ticketType = 'adult';
-    cartDetailObj.seatType = 'normal';
-    // 數量
-    cartDetailObj.ticketNumber = 1;
 
-    //先把新的資料更新到local storage上
-    dataArr.push(cartDetailObj);
-    localStorage.setItem('cartDetail', JSON.stringify(dataArr));
-
-    //再把localstorage的資料更新到localStorageReducer上
-    let localStorageReducer = JSON.parse(localStorage.getItem('cartDetail'));
-    setCartDetail(localStorageReducer);
-
-    //開啟購物車
+    clonedCartDetail.push(ticketInfo);
+    setCartDetail(clonedCartDetail);
     setShow();
   };
 
-  //計算行車時間轉換成HH:MM:SS格式
-  function subTime(DepartureTime, ArrivalTime) {
-    let DepartureArr = DepartureTime.split(':');
-    let ArrivalArr = ArrivalTime.split(':');
-
-    let subHour = ArrivalArr[0] - DepartureArr[0];
-    let subMinute = ArrivalArr[1] - DepartureArr[1];
-
-    let ResultDate;
-    if (subMinute >= 0) {
-      ResultDate = new Date(0, 0, 0, subHour, subMinute, 0);
-    } else {
-      ResultDate = new Date(0, 0, 0, subHour - 1, subMinute + 60, 0);
-    }
-    return `${
-      ResultDate.getHours() < 10
-        ? '0' + ResultDate.getHours()
-        : ResultDate.getHours()
-    }:${
-      ResultDate.getMinutes() < 10
-        ? '0' + ResultDate.getMinutes()
-        : ResultDate.getMinutes()
-    }`;
-  }
-
-  function onEarlyClick(e) {
-    e.stopPropagation();
-    if (currentArrIndexStart >= 5) {
-      setCurrentArrIndexStart(currentArrIndexStart - 5);
-      setCurrentArrIndexEnd(currentArrIndexEnd - 5);
+  function onPrev() {
+    if (startIdx >= 5) {
+      setStartIdxOffset(startIdxOffset - 5);
     }
   }
 
-  function onLateClick(e) {
-    e.stopPropagation();
-    if (currentArrIndexEnd < time.length) {
-      setCurrentArrIndexStart(currentArrIndexStart + 5);
-      setCurrentArrIndexEnd(currentArrIndexEnd + 5);
+  function onNext() {
+    if (endIdx < timeTable.length) {
+      setStartIdxOffset(startIdxOffset + 5);
     }
   }
 
-  //只顯示五個結果
-  const timeArr = time.slice(currentArrIndexStart, currentArrIndexEnd);
-  const renderDetail = timeArr.map((data, index) => {
+  const resultArr = timeTable.slice(startIdx, endIdx);
+  const renderDetail = resultArr.map((data, index) => {
     return (
-      <tr key={index} className='detail__body-row'>
+      <tr key={data.DailyTrainInfo.TrainNo} className='detail__body-row'>
         <td>
           {data.OriginStopTime.DepartureTime}
-          <button id={index} className='ticket-btn' onClick={onClick}></button>
+          <button
+            className='ticket-btn'
+            onClick={(e) => handleTicketClick(e, index)}
+          ></button>
         </td>
         <td>
-          {subTime(
+          {calculateTime(
             data.OriginStopTime.DepartureTime,
             data.DestinationStopTime.ArrivalTime
           )}
@@ -138,12 +112,14 @@ const Result = ({
         <div className='title'>
           <div className='title__left'>
             <span>
-              {time.length > 0 ? time[0].OriginStopTime.StationName.Zh_tw : ''}
+              {timeTable.length > 0
+                ? timeTable[0].OriginStopTime.StationName.Zh_tw
+                : ''}
             </span>
             <FontAwesomeIcon icon={faArrowRight} />
             <span>
-              {time.length > 0
-                ? time[0].DestinationStopTime.StationName.Zh_tw
+              {timeTable.length > 0
+                ? timeTable[0].DestinationStopTime.StationName.Zh_tw
                 : ''}
             </span>
           </div>
@@ -156,11 +132,11 @@ const Result = ({
               cartInfo.show ? 'title__right-move' : ''
             }`}
           >
-            <div className='title__right-early' onClick={onEarlyClick}>
+            <div className='title__right-early' onClick={onPrev}>
               <FontAwesomeIcon icon={faArrowLeft} />
               較早班次
             </div>
-            <div className='title__right-late' onClick={onLateClick}>
+            <div className='title__right-late' onClick={onNext}>
               較晚班次
               <FontAwesomeIcon icon={faArrowRight} />
             </div>
@@ -178,19 +154,19 @@ const Result = ({
           </thead>
 
           <tbody className='detail__body'>
-            {time.length > 0 ? renderDetail : ''}
+            {timeTable.length > 0 ? renderDetail : ''}
           </tbody>
         </table>
       </section>
     );
   };
 
-  return <Fragment>{time.length > 0 ? renderResult() : null}</Fragment>;
+  return <>{timeTable.length > 0 ? renderResult() : null}</>;
 };
 
 const mapStateToProps = (state) => {
   return {
-    time: state.time,
+    timeTable: state.timeTable,
     selectedTime: state.selectedTime,
     selectedDate: state.selectedDate,
     price: state.price,
@@ -200,6 +176,5 @@ const mapStateToProps = (state) => {
 
 export default connect(mapStateToProps, {
   setShow,
-  setNotShow,
   setCartDetail
 })(Result);

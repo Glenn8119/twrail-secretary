@@ -32,13 +32,9 @@ const MainPage = ({ setShow, cartInfo, setCartDetail }) => {
     }
   }, [setCartDetail]);
 
-  const onClick = (e) => {
+  const handleCartClick = (e) => {
+    e.stopPropagation();
     setShow();
-    e.stopPropagation();
-  };
-
-  const onLogoClick = (e) => {
-    e.stopPropagation();
   };
 
   const renderLinks = useCallback(
@@ -63,12 +59,12 @@ const MainPage = ({ setShow, cartInfo, setCartDetail }) => {
   return (
     <div className='container'>
       <nav className='navbar'>
-        <Link to='/' className='navbar__logo' onClick={onLogoClick}>
+        <Link to='/' className='navbar__logo'>
           高鐵秘書
         </Link>
         <ul className='navbar__item-box'>
           {renderLinks()}
-          <li className='nav-item' onClick={onClick}>
+          <li className='nav-item' onClick={handleCartClick}>
             <FontAwesomeIcon icon={faShoppingCart} />
             <span>{cartInfo.detail.length}</span>
           </li>

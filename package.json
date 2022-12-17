@@ -32,7 +32,8 @@
       "react-app/jest"
     ],
     "rules": {
-      "comma-dangle": ["error", "never"]
+      "comma-dangle": ["error", "never"],
+      "prefer-const": "error"
     }
   },
   "browserslist": {

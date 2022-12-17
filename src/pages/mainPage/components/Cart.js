@@ -3,13 +3,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { setNotShow, setCartDetail } from '../../../actions';
 import { connect } from 'react-redux';
-
 import {
   getTicketPrice,
   getTimeDifference,
   changeTimeToMillisecond,
   findValidMinimumItem
-} from './calculating';
+} from '../../../utils';
+
 import CartItems from './CartItems';
 
 const Cart = ({ cartInfo, setNotShow, setCartDetail }) => {
@@ -22,11 +22,10 @@ const Cart = ({ cartInfo, setNotShow, setCartDetail }) => {
         setNotShow();
       }
     };
-    //點擊購物車以外其他地方會收起cart
     document.addEventListener('click', closeCart);
 
     return () => {
-      document.addEventListener('click', closeCart);
+      document.removeEventListener('click', closeCart);
     };
   }, [setNotShow]);
 
@@ -39,41 +38,37 @@ const Cart = ({ cartInfo, setNotShow, setCartDetail }) => {
 
   //清空購物車
   const onClickClear = () => {
-    let arr = [];
-    //更新Localstorage
-    localStorage.setItem('cartDetail', JSON.stringify(arr));
-    //儲存到reducer
-    setCartDetail(JSON.parse(localStorage.getItem('cartDetail')));
+    setCartDetail([]);
   };
 
   //抓出購物車所有車次的出發時間, 轉換成毫秒後排成陣列
-  let timeArr = detail.map((item) => changeTimeToMillisecond(item));
+  const timeArr = detail.map((item) => changeTimeToMillisecond(item));
 
   //抓出尚未過期且最小的一班車的index
-  let targetIndex = timeArr.indexOf(findValidMinimumItem(timeArr));
+  const targetIndex = timeArr.indexOf(findValidMinimumItem(timeArr));
 
   //計算該車次發車時間與現在時間差
-  let TimeDifference = getTimeDifference(detail[targetIndex]);
-  let daysLeft = TimeDifference
+  const TimeDifference = getTimeDifference(detail[targetIndex]);
+  const daysLeft = TimeDifference
     ? Math.floor(TimeDifference.getTime() / 3600000 / 24)
     : '-';
-  let hoursLeft = TimeDifference ? TimeDifference.getUTCHours() : '-';
-  let minutesLeft = TimeDifference ? TimeDifference.getUTCMinutes() : '-';
+  const hoursLeft = TimeDifference ? TimeDifference.getUTCHours() : '-';
+  const minutesLeft = TimeDifference ? TimeDifference.getUTCMinutes() : '-';
 
   //顯示最近一班車資訊
-  let nextOriginStop = TimeDifference ? detail[targetIndex].originStop : null;
-  let nextDestinationStop = TimeDifference
+  const nextOriginStop = TimeDifference ? detail[targetIndex].originStop : null;
+  const nextDestinationStop = TimeDifference
     ? detail[targetIndex].destinationStop
     : null;
-  let nextDepartureTime = TimeDifference
+  const nextDepartureTime = TimeDifference
     ? detail[targetIndex].departureTime
     : null;
-  let nextDepartureDate = TimeDifference ? detail[targetIndex].date : null;
-  let nextnumber = TimeDifference ? detail[targetIndex].number : null;
+  const nextDepartureDate = TimeDifference ? detail[targetIndex].date : null;
+  const nextnumber = TimeDifference ? detail[targetIndex].number : null;
 
   //計算票價總和
-  let priceArr = detail.map((item) => getTicketPrice(item));
-  let totalPrice =
+  const priceArr = detail.map((item) => getTicketPrice(item));
+  const totalPrice =
     priceArr.length > 0
       ? priceArr.reduce((a, b) => {
           return a + b;

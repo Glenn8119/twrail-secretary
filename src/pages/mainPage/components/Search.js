@@ -8,7 +8,14 @@ import {
   getSelectedTime,
   getSelectedDate
 } from '../../../actions';
-import { changeDateForm } from '../../../utils';
+
+function changeDateForm(date) {
+  const y = date.getFullYear();
+  const m = date.getMonth();
+  const d = date.getDate();
+
+  return `${y}-${m < 9 ? '0' + (m + 1) : m + 1}-${d <= 9 ? '0' + d : d}`;
+}
 
 const destOptions = [
   { name: '南港', id: '0990' },

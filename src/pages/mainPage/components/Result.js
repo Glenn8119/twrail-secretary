@@ -4,14 +4,12 @@ import { faArrowRight, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { setShow, setCartDetail } from '../../../actions';
 import { connect } from 'react-redux';
 
-//檢驗t1是否大於t2
 const laterThan = (t1, t2) => {
   const t1Arr = t1.split(':');
   const t2Arr = t2.split(':');
   return t1Arr[0] * 60 + t1Arr[1] - (t2Arr[0] * 60 + t2Arr[1]) > 0;
 };
 
-//計算行車時間轉換成HH:MM:SS格式
 function calculateTime(DepartureTime, ArrivalTime) {
   const DepartureArr = DepartureTime.split(':');
   const ArrivalArr = ArrivalTime.split(':');

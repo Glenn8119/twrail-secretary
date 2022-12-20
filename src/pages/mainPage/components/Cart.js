@@ -6,11 +6,16 @@ import { connect } from 'react-redux';
 import {
   getTicketPrice,
   getTimeDifference,
-  changeTimeToMillisecond,
-  findValidMinimumItem
+  toMillisecond
 } from '../../../utils';
 
 import CartItems from './CartItems';
+
+function findClosest(arr) {
+  const nowTime = new Date().getTime();
+  const positiveArr = arr.filter((item) => item - nowTime > 0);
+  return Math.min(...positiveArr);
+}
 
 const Cart = ({ cartInfo, setNotShow, setCartDetail }) => {
   const refCart = useRef();
@@ -29,56 +34,36 @@ const Cart = ({ cartInfo, setNotShow, setCartDetail }) => {
     };
   }, [setNotShow]);
 
-  //想要分別管理每一個item裡面的票種狀態,因此將每個購物車item用另一個component顯示
-  const renderDetail = detail
-    ? detail.map((item, index) => {
-        return <CartItems item={item} index={index} key={index} />;
-      })
-    : null;
-
-  //清空購物車
-  const onClickClear = () => {
+  const clickCart = () => {
     setCartDetail([]);
   };
 
-  //抓出購物車所有車次的出發時間, 轉換成毫秒後排成陣列
-  const timeArr = detail.map((item) => changeTimeToMillisecond(item));
+  const timeArr = detail.map((item) => toMillisecond(item));
+  const targetIndex = timeArr.indexOf(findClosest(timeArr));
 
-  //抓出尚未過期且最小的一班車的index
-  const targetIndex = timeArr.indexOf(findValidMinimumItem(timeArr));
+  const renderRemind = () => {
+    let daysLeft = '-';
+    let hoursLeft = '-';
+    let minutesLeft = '-';
+    let nextOriginStop;
+    let nextDestinationStop;
+    let nextDepartureTime;
+    let nextDepartureDate;
+    let nextnumber;
+    const timeDifference = getTimeDifference(detail[targetIndex]);
 
-  //計算該車次發車時間與現在時間差
-  const TimeDifference = getTimeDifference(detail[targetIndex]);
-  const daysLeft = TimeDifference
-    ? Math.floor(TimeDifference.getTime() / 3600000 / 24)
-    : '-';
-  const hoursLeft = TimeDifference ? TimeDifference.getUTCHours() : '-';
-  const minutesLeft = TimeDifference ? TimeDifference.getUTCMinutes() : '-';
+    if (timeDifference) {
+      daysLeft = Math.floor(timeDifference.getTime() / 3600000 / 24);
+      hoursLeft = timeDifference.getUTCHours();
+      minutesLeft = timeDifference.getUTCMinutes();
+      nextOriginStop = detail[targetIndex].originStop;
+      nextDestinationStop = detail[targetIndex].destinationStop;
+      nextDepartureTime = detail[targetIndex].departureTime;
+      nextDepartureDate = detail[targetIndex].date;
+      nextnumber = detail[targetIndex].number;
+    }
 
-  //顯示最近一班車資訊
-  const nextOriginStop = TimeDifference ? detail[targetIndex].originStop : null;
-  const nextDestinationStop = TimeDifference
-    ? detail[targetIndex].destinationStop
-    : null;
-  const nextDepartureTime = TimeDifference
-    ? detail[targetIndex].departureTime
-    : null;
-  const nextDepartureDate = TimeDifference ? detail[targetIndex].date : null;
-  const nextnumber = TimeDifference ? detail[targetIndex].number : null;
-
-  //計算票價總和
-  const priceArr = detail.map((item) => getTicketPrice(item));
-  const totalPrice =
-    priceArr.length > 0
-      ? priceArr.reduce((a, b) => {
-          return a + b;
-        })
-      : 0;
-
-  return (
-    <section ref={refCart} className={`cart ${show ? 'show-cart' : ''}`}>
-      <FontAwesomeIcon icon={faTimes} onClick={setNotShow} />
-      <h2 className='heading-2 cart__heading'>購物車</h2>
+    return (
       <div className='early'>
         <h3 className='heading-3'>最近車次</h3>
         <div className='early__detail'>
@@ -93,7 +78,7 @@ const Cart = ({ cartInfo, setNotShow, setCartDetail }) => {
             <span className='early__detail-information-destination'>
               {nextOriginStop}
             </span>
-            {TimeDifference ? '往' : ''}
+            {timeDifference ? '往' : ''}
             <span>{nextDestinationStop}</span>
           </div>
           <p className='early__detail-time'>
@@ -102,12 +87,29 @@ const Cart = ({ cartInfo, setNotShow, setCartDetail }) => {
           </p>
         </div>
       </div>
-      {renderDetail}
+    );
+  };
+
+  const renderDetail = () =>
+    detail.map((item, index) => {
+      return <CartItems item={item} index={index} key={index} />;
+    });
+
+  //計算票價總和
+  const priceArr = detail.map((item) => getTicketPrice(item));
+  const totalPrice = priceArr.reduce((a, b) => a + b, 0);
+
+  return (
+    <section ref={refCart} className={`cart ${show ? 'show-cart' : ''}`}>
+      <FontAwesomeIcon icon={faTimes} onClick={setNotShow} />
+      <h2 className='heading-2 cart__heading'>購物車</h2>
+      {renderRemind()}
+      {renderDetail()}
       <div className='total'>
         <p className='total__price'>
           總金額 :<span>$ {totalPrice}</span>元
         </p>
-        <button onClick={onClickClear} className='total__btn'>
+        <button onClick={clickCart} className='total__btn'>
           清空購物車
         </button>
       </div>

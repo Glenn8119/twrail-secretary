@@ -5,70 +5,61 @@ import { getTicketPrice, getTimeDifference } from '../../../utils';
 
 const CartItems = ({ cartInfo, setCartDetail, item, index }) => {
   const { detail } = cartInfo;
-  //改變票種的同時儲存到redux以及localstorage
-  const onTicketTypeChange = (e) => {
-    //人數低於11人不能選團體票 && 自由座不能選團體票
-    if (item.ticketNumber < 11 && e.target.value === 'group') {
-      alert('選擇團體票人數須至少11人');
-      return;
-    } else if (item.seatType === 'freeSeat' && e.target.value === 'group') {
-      alert('自由座無販售團體票');
-      return;
+
+  const onSelect = (e) => {
+    const type = e.target.name;
+
+    if (type === 'ticketType') {
+      if (item.ticketNumber < 11 && e.target.value === 'group') {
+        alert('選擇團體票人數須至少11人');
+        return;
+      }
+      if (item.seatType === 'freeSeat' && e.target.value === 'group') {
+        alert('自由座無販售團體票');
+        return;
+      }
     }
 
-    const Arr = [...detail];
-    const Obj = { ...item };
-    Obj.ticketType = e.target.value;
-    Arr[index] = Obj;
-    setCartDetail(Arr);
-  };
-  //改變票種的同時儲存到redux以及localstorage
-  const onSeatTypeChange = (e) => {
-    if (item.ticketType === 'group' && e.target.value === 'freeSeat') {
-      alert('自由座無販售團體票');
-      return;
+    if (type === 'seatType') {
+      if (item.ticketType === 'group' && e.target.value === 'freeSeat') {
+        alert('自由座無販售團體票');
+        return;
+      }
     }
 
-    const Arr = [...detail];
-    const Obj = { ...item };
-    Obj.seatType = e.target.value;
-    Arr[index] = Obj;
-    setCartDetail(Arr);
+    const clonedDetail = [...detail];
+    const clonedItem = { ...item };
+    clonedItem[type] = e.target.value;
+    clonedDetail[index] = clonedItem;
+    setCartDetail(clonedDetail);
   };
 
-  const onClickDelete = (e) => {
-    e.stopPropagation();
-    // 刪除該項目
-    const updatedArr = detail.filter(
-      (item) => detail.indexOf(item) !== e.target.id
-    );
-
+  const onClickDelete = () => {
+    const updatedArr = detail.filter((_, idx) => idx !== index);
     setCartDetail(updatedArr);
   };
 
-  const onClickUp = (item) => {
-    //拷貝該物件
-    const Obj = { ...item };
-    //拷貝陣列
-    const Arr = [...detail];
-    Obj.ticketNumber += 1;
-    Arr[index] = Obj;
-    setCartDetail(Arr);
+  const onClickUp = () => {
+    const clonedItem = { ...item };
+    const clonedDetail = [...detail];
+    clonedItem.ticketNumber += 1;
+    clonedDetail[index] = clonedItem;
+    setCartDetail(clonedDetail);
   };
 
-  const onClickDown = (item) => {
+  const onClickDown = () => {
     //團體票人數須大於11人
     if (item.ticketNumber === 11 && item.ticketType === 'group') {
       alert('團體票人數須大於11人, 若要減少張數請選擇其他票種');
       return;
     }
 
-    const Obj = { ...item };
-    const Arr = [...detail];
-    if (Obj.ticketNumber > 1) {
-      Obj.ticketNumber -= 1;
-      Arr[index] = Obj;
-      setCartDetail(Arr);
+    const clonedItem = { ...item };
+    const clonedDetail = [...detail];
+    if (clonedItem.ticketNumber > 1) {
+      clonedItem.ticketNumber -= 1;
+      clonedDetail[index] = clonedItem;
+      setCartDetail(clonedDetail);
     }
   };
 
@@ -99,7 +90,8 @@ const CartItems = ({ cartInfo, setCartDetail, item, index }) => {
         <div className='item__middle-select'>
           <select
             className='item__middle-select-seatType'
-            onChange={onSeatTypeChange}
+            onChange={onSelect}
+            name='seatType'
             value={item.seatType}
           >
             <option value='normal'>標準</option>
@@ -108,7 +100,8 @@ const CartItems = ({ cartInfo, setCartDetail, item, index }) => {
           </select>
           <select
             className='item__middle-select-ticketType'
-            onChange={onTicketTypeChange}
+            onChange={onSelect}
+            name='ticketType'
             value={item.ticketType}
           >
             <option value='adult'>全票</option>
@@ -118,16 +111,13 @@ const CartItems = ({ cartInfo, setCartDetail, item, index }) => {
         </div>
       </div>
       <div className='item__right'>
-        <span onClick={() => onClickUp(item)} className='item__right-up'></span>
+        <span onClick={onClickUp} className='item__right-up'></span>
         <span>{item.ticketNumber}</span>
-        <span
-          onClick={() => onClickDown(item)}
-          className='item__right-down'
-        ></span>
+        <span onClick={onClickDown} className='item__right-down'></span>
       </div>
       <button
         className='item__icon'
-        onClick={onClickDelete}
+        onClick={(e) => onClickDelete(e, index)}
         id={index}
       ></button>
     </div>

@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import { composeWithDevTools } from '@redux-devtools/extension';
@@ -14,9 +14,9 @@ const store = createStore(
   composeWithDevTools(applyMiddleware(thunk))
 );
 
-ReactDOM.render(
+const root = ReactDOM.createRoot(document.querySelector('#root'));
+root.render(
   <Provider store={store}>
     <App />
-  </Provider>,
-  document.querySelector('#root')
+  </Provider>
 );

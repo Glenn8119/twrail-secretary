@@ -36,12 +36,6 @@ const Result = ({
     setStartIdxOffset(0);
   }, [timeTable]);
 
-  const startItem = timeTable.find((item) =>
-    laterThan(item.OriginStopTime.DepartureTime, selectedTime)
-  );
-  const startIdx = timeTable.indexOf(startItem) + startIdxOffset;
-  const endIdx = startIdx + 5;
-
   const handleTicketClick = (e, index) => {
     // stop cart from not showing
     e.stopPropagation();
@@ -70,18 +64,27 @@ const Result = ({
   };
 
   function onPrev() {
-    if (startIdx >= 5) {
+    if (startIdx + startIdxOffset > 0) {
       setStartIdxOffset(startIdxOffset - 5);
     }
   }
 
   function onNext() {
-    if (endIdx < timeTable.length) {
+    if (endIdx + 5 <= timeTable.length) {
       setStartIdxOffset(startIdxOffset + 5);
     }
   }
 
-  const resultArr = timeTable.slice(startIdx, endIdx);
+  const startItem = timeTable.find((item) =>
+    laterThan(item.OriginStopTime.DepartureTime, selectedTime)
+  );
+
+  const startIdx = startItem ? timeTable.indexOf(startItem) : timeTable.length;
+  const sliceStart =
+    startIdx + startIdxOffset < 0 ? 0 : startIdx + startIdxOffset;
+  const endIdx = sliceStart + 5;
+
+  const resultArr = timeTable.slice(sliceStart, endIdx);
   const renderDetail = resultArr.map((data, index) => {
     return (
       <tr key={data.DailyTrainInfo.TrainNo} className='detail__body-row'>

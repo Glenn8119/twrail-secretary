@@ -18,7 +18,8 @@ export const fetchTime =
   (OriginStationID, DestinationStationID, TrainDate) => async (dispatch) => {
     let token = checkToken();
     if (!token) {
-      token = await GetAuthorizationHeader().access_token;
+      const result = await GetAuthorizationHeader();
+      token = result.data.access_token;
     }
     const response = await PtxTime.get(
       `/${OriginStationID}/to/${DestinationStationID}/${TrainDate}?&$format=JSON`,
@@ -36,7 +37,8 @@ export const fetchPrice =
   (OriginStationID, DestinationStationID) => async (dispatch) => {
     let token = checkToken();
     if (!token) {
-      token = await GetAuthorizationHeader().access_token;
+      const result = await GetAuthorizationHeader();
+      token = result.data.access_token;
     }
     const response = await PtxPrice.get(
       `/ODFare/${OriginStationID}/to/${DestinationStationID}`,

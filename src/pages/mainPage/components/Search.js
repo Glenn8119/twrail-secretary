@@ -1,20 +1,20 @@
-import React, { useCallback, useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faExchangeAlt } from '@fortawesome/free-solid-svg-icons';
-import { connect } from 'react-redux';
+import React, { useCallback, useState } from 'react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faExchangeAlt } from '@fortawesome/free-solid-svg-icons'
+import { connect } from 'react-redux'
 import {
   fetchTime,
   fetchPrice,
   getSelectedTime,
   getSelectedDate
-} from '../../../actions';
+} from '../../../actions'
 
 function changeDateForm(date) {
-  const y = date.getFullYear();
-  const m = date.getMonth();
-  const d = date.getDate();
+  const y = date.getFullYear()
+  const m = date.getMonth()
+  const d = date.getDate()
 
-  return `${y}-${m < 9 ? '0' + (m + 1) : m + 1}-${d <= 9 ? '0' + d : d}`;
+  return `${y}-${m < 9 ? '0' + (m + 1) : m + 1}-${d <= 9 ? '0' + d : d}`
 }
 
 const destOptions = [
@@ -30,19 +30,19 @@ const destOptions = [
   { name: '嘉義', id: '1050' },
   { name: '台南', id: '1060' },
   { name: '左營', id: '1070' }
-];
+]
 
-const week = ['日', '一', '二', '三', '四', '五', '六'];
+const week = ['日', '一', '二', '三', '四', '五', '六']
 
-const date = new Date();
-const h = date.getHours();
-const m = date.getMinutes();
+const date = new Date()
+const h = date.getHours()
+const m = date.getMinutes()
 
 // 最多僅能選一個月內時間
-const maxDate = new Date(date.getTime() + 1000 * 60 * 60 * 24 * 28);
-const DEFAULT_DATE = changeDateForm(date);
-const MAX_DATE = changeDateForm(maxDate);
-const DEFAULT_TIME = `${h < 10 ? '0' + h : h}:${m < 10 ? '0' + m : m}`;
+const maxDate = new Date(date.getTime() + 1000 * 60 * 60 * 24 * 28)
+const DEFAULT_DATE = changeDateForm(date)
+const MAX_DATE = changeDateForm(maxDate)
+const DEFAULT_TIME = `${h < 10 ? '0' + h : h}:${m < 10 ? '0' + m : m}`
 
 const Search = ({
   fetchTime,
@@ -52,14 +52,14 @@ const Search = ({
   cartInfo
 }) => {
   //預設日期時間為當下
-  const [dateInput, setDateInput] = useState(DEFAULT_DATE);
-  const [timeInput, setTimeInput] = useState(DEFAULT_TIME);
+  const [dateInput, setDateInput] = useState(DEFAULT_DATE)
+  const [timeInput, setTimeInput] = useState(DEFAULT_TIME)
 
   //起訖站預設為南港到左營
-  const [stationID, setStationID] = useState(destOptions[0].id);
+  const [stationID, setStationID] = useState(destOptions[0].id)
   const [DestinationStationID, setDestinationStationID] = useState(
     destOptions[destOptions.length - 1].id
-  );
+  )
 
   const renderOptions = useCallback(() => {
     return destOptions.map((option) => {
@@ -67,46 +67,46 @@ const Search = ({
         <option key={option.id} value={option.id}>
           {option.name}
         </option>
-      );
-    });
-  }, []);
+      )
+    })
+  }, [])
 
   function onSubmit(e) {
-    e.preventDefault();
+    e.preventDefault()
 
     if (stationID === DestinationStationID) {
-      alert('出發站不可等於到達站');
+      alert('出發站不可等於到達站')
     }
 
-    const weekValue = week[new Date(dateInput).getDay()];
+    const weekValue = week[new Date(dateInput).getDay()]
 
-    fetchTime(stationID, DestinationStationID, dateInput);
-    fetchPrice(stationID, DestinationStationID);
-    getSelectedTime(timeInput);
-    getSelectedDate(`${dateInput}(${weekValue})`);
+    fetchTime(stationID, DestinationStationID, dateInput)
+    fetchPrice(stationID, DestinationStationID)
+    getSelectedTime(timeInput)
+    getSelectedDate(`${dateInput}(${weekValue})`)
   }
 
   const onOriginStopChange = (e) => {
-    setStationID(e.target.value);
-  };
+    setStationID(e.target.value)
+  }
 
   const onDestinationStopChange = (e) => {
-    setDestinationStationID(e.target.value);
-  };
+    setDestinationStationID(e.target.value)
+  }
 
   const onDateSelectChange = (e) => {
-    setDateInput(e.target.value);
-  };
+    setDateInput(e.target.value)
+  }
 
   const onTimeSelectChange = (e) => {
-    setTimeInput(e.target.value);
-  };
+    setTimeInput(e.target.value)
+  }
 
   const onExchangeClick = (e) => {
-    e.preventDefault();
-    setStationID(DestinationStationID);
-    setDestinationStationID(stationID);
-  };
+    e.preventDefault()
+    setStationID(DestinationStationID)
+    setDestinationStationID(stationID)
+  }
 
   return (
     <form
@@ -167,19 +167,19 @@ const Search = ({
 
       <button className='search__btn'>查詢</button>
     </form>
-  );
-};
+  )
+}
 
 const mapStateToProps = (state) => {
   return {
     price: state.price,
     cartInfo: state.cartInfo
-  };
-};
+  }
+}
 
 export default connect(mapStateToProps, {
   fetchTime,
   fetchPrice,
   getSelectedTime,
   getSelectedDate
-})(Search);
+})(Search)

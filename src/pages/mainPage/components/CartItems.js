@@ -1,69 +1,69 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { setCartDetail } from '../../../actions';
-import { getTicketPrice, getTimeDifference } from '../../../utils';
+import React from 'react'
+import { connect } from 'react-redux'
+import { setCartDetail } from '../../../actions'
+import { getTicketPrice, getTimeDifference } from '../../../utils'
 
 const CartItems = ({ cartInfo, setCartDetail, item, index }) => {
-  const { detail } = cartInfo;
+  const { detail } = cartInfo
 
   const onSelect = (e) => {
-    const type = e.target.name;
+    const type = e.target.name
 
     if (type === 'ticketType') {
       if (item.ticketNumber < 11 && e.target.value === 'group') {
-        alert('選擇團體票人數須至少11人');
-        return;
+        alert('選擇團體票人數須至少11人')
+        return
       }
       if (item.seatType === 'freeSeat' && e.target.value === 'group') {
-        alert('自由座無販售團體票');
-        return;
+        alert('自由座無販售團體票')
+        return
       }
     }
 
     if (type === 'seatType') {
       if (item.ticketType === 'group' && e.target.value === 'freeSeat') {
-        alert('自由座無販售團體票');
-        return;
+        alert('自由座無販售團體票')
+        return
       }
     }
 
-    const clonedDetail = [...detail];
-    const clonedItem = { ...item };
-    clonedItem[type] = e.target.value;
-    clonedDetail[index] = clonedItem;
-    setCartDetail(clonedDetail);
-  };
+    const clonedDetail = [...detail]
+    const clonedItem = { ...item }
+    clonedItem[type] = e.target.value
+    clonedDetail[index] = clonedItem
+    setCartDetail(clonedDetail)
+  }
 
   const onClickDelete = () => {
-    const updatedArr = detail.filter((_, idx) => idx !== index);
-    setCartDetail(updatedArr);
-  };
+    const updatedArr = detail.filter((_, idx) => idx !== index)
+    setCartDetail(updatedArr)
+  }
 
   const onClickUp = () => {
-    const clonedItem = { ...item };
-    const clonedDetail = [...detail];
-    clonedItem.ticketNumber += 1;
-    clonedDetail[index] = clonedItem;
-    setCartDetail(clonedDetail);
-  };
+    const clonedItem = { ...item }
+    const clonedDetail = [...detail]
+    clonedItem.ticketNumber += 1
+    clonedDetail[index] = clonedItem
+    setCartDetail(clonedDetail)
+  }
 
   const onClickDown = () => {
     //團體票人數須大於11人
     if (item.ticketNumber === 11 && item.ticketType === 'group') {
-      alert('團體票人數須大於11人, 若要減少張數請選擇其他票種');
-      return;
+      alert('團體票人數須大於11人, 若要減少張數請選擇其他票種')
+      return
     }
 
-    const clonedItem = { ...item };
-    const clonedDetail = [...detail];
+    const clonedItem = { ...item }
+    const clonedDetail = [...detail]
     if (clonedItem.ticketNumber > 1) {
-      clonedItem.ticketNumber -= 1;
-      clonedDetail[index] = clonedItem;
-      setCartDetail(clonedDetail);
+      clonedItem.ticketNumber -= 1
+      clonedDetail[index] = clonedItem
+      setCartDetail(clonedDetail)
     }
-  };
+  }
 
-  const ticketPrice = getTicketPrice(item);
+  const ticketPrice = getTicketPrice(item)
 
   return (
     <div className='item'>
@@ -121,13 +121,13 @@ const CartItems = ({ cartInfo, setCartDetail, item, index }) => {
         id={index}
       ></button>
     </div>
-  );
-};
+  )
+}
 
 const mapStateToProps = (state) => {
   return {
     cartInfo: state.cartInfo
-  };
-};
+  }
+}
 
-export default connect(mapStateToProps, { setCartDetail })(CartItems);
+export default connect(mapStateToProps, { setCartDetail })(CartItems)

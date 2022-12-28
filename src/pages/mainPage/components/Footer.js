@@ -1,5 +1,5 @@
-import Ptx from '../../../img/ptx.png';
-import React from 'react';
+import Ptx from '../../../img/ptx.png'
+import React from 'react'
 
 const Footer = () => {
   return (
@@ -10,7 +10,7 @@ const Footer = () => {
         <img src={Ptx} alt='ptx-logo'></img>
       </div>
     </footer>
-  );
-};
+  )
+}
 
-export default Footer;
+export default Footer

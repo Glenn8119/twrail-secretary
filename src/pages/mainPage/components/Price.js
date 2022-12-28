@@ -1,12 +1,12 @@
-import React, { Fragment } from 'react';
-import { connect } from 'react-redux';
-import { groupPrice, oldPrice } from '../../../utils';
+import React, { Fragment } from 'react'
+import { connect } from 'react-redux'
+import { groupPrice, oldPrice } from '../../../utils'
 
 const Price = ({ price }) => {
   const renderDetail = () => {
-    const priceBusiness = price[0].Fares[0].Price;
-    const priceNormal = price[0].Fares[1].Price;
-    const pricefreeSeat = price[0].Fares[2].Price;
+    const priceBusiness = price[0].Fares[0].Price
+    const priceNormal = price[0].Fares[1].Price
+    const pricefreeSeat = price[0].Fares[2].Price
 
     return (
       <section className='price'>
@@ -43,14 +43,14 @@ const Price = ({ price }) => {
           </tbody>
         </table>
       </section>
-    );
-  };
+    )
+  }
 
-  return <Fragment>{price.length ? renderDetail() : null}</Fragment>;
-};
+  return <Fragment>{price.length ? renderDetail() : null}</Fragment>
+}
 
 const mapStateToProps = (state) => {
-  return { price: state.price };
-};
+  return { price: state.price }
+}
 
-export default connect(mapStateToProps)(Price);
+export default connect(mapStateToProps)(Price)

@@ -1,66 +1,66 @@
-import React, { useEffect, useRef } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes } from '@fortawesome/free-solid-svg-icons';
-import { setNotShow, setCartDetail } from '../../../actions';
-import { connect } from 'react-redux';
+import React, { useEffect, useRef } from 'react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTimes } from '@fortawesome/free-solid-svg-icons'
+import { setNotShow, setCartDetail } from '../../../actions'
+import { connect } from 'react-redux'
 import {
   getTicketPrice,
   getTimeDifference,
   toMillisecond
-} from '../../../utils';
+} from '../../../utils'
 
-import CartItems from './CartItems';
+import CartItems from './CartItems'
 
 function findClosest(arr) {
-  const nowTime = new Date().getTime();
-  const positiveArr = arr.filter((item) => item - nowTime > 0);
-  return Math.min(...positiveArr);
+  const nowTime = new Date().getTime()
+  const positiveArr = arr.filter((item) => item - nowTime > 0)
+  return Math.min(...positiveArr)
 }
 
 const Cart = ({ cartInfo, setNotShow, setCartDetail }) => {
-  const refCart = useRef();
-  const { show, detail } = cartInfo;
+  const refCart = useRef()
+  const { show, detail } = cartInfo
 
   useEffect(() => {
     const closeCart = (e) => {
       if (refCart.current && !refCart.current.contains(e.target)) {
-        setNotShow();
+        setNotShow()
       }
-    };
-    document.addEventListener('click', closeCart);
+    }
+    document.addEventListener('click', closeCart)
 
     return () => {
-      document.removeEventListener('click', closeCart);
-    };
-  }, [setNotShow]);
+      document.removeEventListener('click', closeCart)
+    }
+  }, [setNotShow])
 
   const clickCart = () => {
-    setCartDetail([]);
-  };
+    setCartDetail([])
+  }
 
-  const timeArr = detail.map((item) => toMillisecond(item));
-  const targetIndex = timeArr.indexOf(findClosest(timeArr));
+  const timeArr = detail.map((item) => toMillisecond(item))
+  const targetIndex = timeArr.indexOf(findClosest(timeArr))
 
   const renderRemind = () => {
-    let daysLeft = '-';
-    let hoursLeft = '-';
-    let minutesLeft = '-';
-    let nextOriginStop;
-    let nextDestinationStop;
-    let nextDepartureTime;
-    let nextDepartureDate;
-    let nextnumber;
-    const timeDifference = getTimeDifference(detail[targetIndex]);
+    let daysLeft = '-'
+    let hoursLeft = '-'
+    let minutesLeft = '-'
+    let nextOriginStop
+    let nextDestinationStop
+    let nextDepartureTime
+    let nextDepartureDate
+    let nextnumber
+    const timeDifference = getTimeDifference(detail[targetIndex])
 
     if (timeDifference) {
-      daysLeft = Math.floor(timeDifference.getTime() / 3600000 / 24);
-      hoursLeft = timeDifference.getUTCHours();
-      minutesLeft = timeDifference.getUTCMinutes();
-      nextOriginStop = detail[targetIndex].originStop;
-      nextDestinationStop = detail[targetIndex].destinationStop;
-      nextDepartureTime = detail[targetIndex].departureTime;
-      nextDepartureDate = detail[targetIndex].date;
-      nextnumber = detail[targetIndex].number;
+      daysLeft = Math.floor(timeDifference.getTime() / 3600000 / 24)
+      hoursLeft = timeDifference.getUTCHours()
+      minutesLeft = timeDifference.getUTCMinutes()
+      nextOriginStop = detail[targetIndex].originStop
+      nextDestinationStop = detail[targetIndex].destinationStop
+      nextDepartureTime = detail[targetIndex].departureTime
+      nextDepartureDate = detail[targetIndex].date
+      nextnumber = detail[targetIndex].number
     }
 
     return (
@@ -87,17 +87,17 @@ const Cart = ({ cartInfo, setNotShow, setCartDetail }) => {
           </p>
         </div>
       </div>
-    );
-  };
+    )
+  }
 
   const renderDetail = () =>
     detail.map((item, index) => {
-      return <CartItems item={item} index={index} key={index} />;
-    });
+      return <CartItems item={item} index={index} key={index} />
+    })
 
   //計算票價總和
-  const priceArr = detail.map((item) => getTicketPrice(item));
-  const totalPrice = priceArr.reduce((a, b) => a + b, 0);
+  const priceArr = detail.map((item) => getTicketPrice(item))
+  const totalPrice = priceArr.reduce((a, b) => a + b, 0)
 
   return (
     <section ref={refCart} className={`cart ${show ? 'show-cart' : ''}`}>
@@ -114,13 +114,13 @@ const Cart = ({ cartInfo, setNotShow, setCartDetail }) => {
         </button>
       </div>
     </section>
-  );
-};
+  )
+}
 
 const mapStateToProps = (state) => {
   return {
     cartInfo: state.cartInfo
-  };
-};
+  }
+}
 
-export default connect(mapStateToProps, { setNotShow, setCartDetail })(Cart);
+export default connect(mapStateToProps, { setNotShow, setCartDetail })(Cart)

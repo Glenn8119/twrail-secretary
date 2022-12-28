@@ -21,4 +21,4 @@ export const fakeCartDetail = [
     seatType: 'normal',
     ticketNumber: 1
   }
-];
+]

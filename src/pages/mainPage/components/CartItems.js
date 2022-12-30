@@ -66,7 +66,7 @@ const CartItems = ({ cartInfo, setCartDetail, item, index }) => {
   const ticketPrice = getTicketPrice(item)
 
   return (
-    <div className='item'>
+    <div className='item' data-testid='cart-item'>
       <div className='item__left'>
         <span className='item__left-location'>{item.originStop}</span>
         <span>往</span>
@@ -103,6 +103,7 @@ const CartItems = ({ cartInfo, setCartDetail, item, index }) => {
             onChange={onSelect}
             name='ticketType'
             value={item.ticketType}
+            data-testid='ticketType'
           >
             <option value='adult'>全票</option>
             <option value='old'>敬老</option>

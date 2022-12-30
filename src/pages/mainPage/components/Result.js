@@ -91,6 +91,7 @@ const Result = ({
         <td>
           {data.OriginStopTime.DepartureTime}
           <button
+            data-testid='ticket-btn'
             className='ticket-btn'
             onClick={(e) => handleTicketClick(e, index)}
           ></button>

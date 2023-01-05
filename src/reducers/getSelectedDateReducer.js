@@ -1,4 +1,4 @@
-export default (selectedDate = '', action) => {
+const getSelectedTimeReducer = (selectedDate = '', action) => {
   switch (action.type) {
     case 'GET_SELECTED_DATE':
       return action.payload
@@ -6,3 +6,5 @@ export default (selectedDate = '', action) => {
       return selectedDate
   }
 }
+
+export default getSelectedTimeReducer

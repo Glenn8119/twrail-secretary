@@ -2,18 +2,16 @@ import { render, screen, fireEvent } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import { applyMiddleware, createStore } from 'redux'
 import thunk from 'redux-thunk'
-import { fakeCartDetail } from '../../fake/cartData'
 import reducers from '../../reducers'
-import { mockTimetable } from '../../fake/Result'
+import { mockCartDetail, mockTimetable, mockPrice } from '../../fake'
 import MainPage from '.'
 import { HashRouter } from 'react-router-dom'
-import userEvent from '@testing-library/user-event'
 import '@testing-library/jest-dom/extend-expect'
-import { mockPrice } from '../../fake/price'
+import axios from 'axios'
 
 const mockCartInfo = {
   show: true,
-  detail: fakeCartDetail
+  detail: mockCartDetail
 }
 
 const setupStore = (preloadState) => {
@@ -25,7 +23,6 @@ const customRender = (
   { preloadState = {}, store = setupStore(preloadState), ...options } = {}
 ) => {
   const MockProvider = ({ children }) => {
-    console.log({ store: store.getState() })
     return (
       <Provider store={store}>
         <HashRouter>{children}</HashRouter>
@@ -33,6 +30,10 @@ const customRender = (
     )
   }
   return render(ui, { wrapper: MockProvider, ...options })
+}
+
+if (typeof process != 'undefined') {
+  axios.defaults.adapter = require('axios/lib/adapters/http')
 }
 
 it('group tickets cannot be select when there are less than 11 people', async () => {

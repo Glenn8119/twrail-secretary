@@ -1,4 +1,4 @@
-export default (localStorage = [], action) => {
+const localStorageReducer = (localStorage = [], action) => {
   switch (action.type) {
     case 'SET_LOCALSTORAGE':
       return action.payload
@@ -6,3 +6,5 @@ export default (localStorage = [], action) => {
       return localStorage
   }
 }
+
+export default localStorageReducer

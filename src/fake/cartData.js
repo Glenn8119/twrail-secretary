@@ -1,4 +1,4 @@
-export const fakeCartDetail = [
+const mockCartDetail = [
   {
     originStop: '南港',
     destinationStop: '左營',
@@ -22,3 +22,5 @@ export const fakeCartDetail = [
     ticketNumber: 1
   }
 ]
+
+export default mockCartDetail

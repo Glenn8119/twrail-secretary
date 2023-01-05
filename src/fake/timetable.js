@@ -1,4 +1,4 @@
-export const mockTimetable = [
+const mockTimetable = [
   {
     TrainDate: '2023-12-29',
     DailyTrainInfo: {
@@ -81,18 +81,4 @@ export const mockTimetable = [
   }
 ]
 
-// const ticketInfo = {
-//   originStop: ticket.OriginStopTime.StationName.Zh_tw,
-//   destinationStop: ticket.DestinationStopTime.StationName.Zh_tw,
-//   number: ticket.DailyTrainInfo.TrainNo,
-//   date: ticket.TrainDate,
-//   departureTime: ticket.OriginStopTime.DepartureTime,
-//   price: {
-//     business: price[0].Fares[0].Price,
-//     normal: price[0].Fares[1].Price,
-//     freeSeat: price[0].Fares[2].Price
-//   },
-//   ticketType: 'adult',
-//   seatType: 'normal',
-//   ticketNumber: 1
-// }
+export default mockTimetable

@@ -5,7 +5,7 @@ export const PtxTime = axios.create({
 })
 
 export const PtxPrice = axios.create({
-  baseURL: 'https://ptx.transportdata.tw/MOTC/v2/Rail/THSR'
+  baseURL: 'https://ptx.transportdata.tw/MOTC/v2/Rail/THSR/ODFare'
 })
 
 export function GetAuthorizationHeader() {
@@ -28,7 +28,9 @@ export function GetAuthorizationHeader() {
   }).then((res) => {
     const timeStamp = new Date().getTime()
     const token = res.data.access_token
+    console.log('succ')
     localStorage.setItem('tokenRecord', JSON.stringify({ timeStamp, token }))
+    console.log('after succ')
     return res
   })
 }

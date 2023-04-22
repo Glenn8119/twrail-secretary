@@ -49,11 +49,12 @@
     ]
   },
   "devDependencies": {
-    "node-sass": "^8.0.0",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^14.4.3",
-    "nock": "^13.2.9"
+    "nock": "^13.2.9",
+    "node-sass": "^8.0.0",
+    "@babel/runtime": "^7.21.0"
   },
   "jest": {
     "resetMocks": false

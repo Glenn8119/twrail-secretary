@@ -1,5 +1,5 @@
 import { fakeCartDetail } from '../fake/cartData'
-import cartReducer from './cartReducer'
+import cartReducer from '../../reducers/cartReducer'
 
 const initialState = {
   detail: [],

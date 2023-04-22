@@ -28,9 +28,7 @@ export function GetAuthorizationHeader() {
   }).then((res) => {
     const timeStamp = new Date().getTime()
     const token = res.data.access_token
-    console.log('succ')
     localStorage.setItem('tokenRecord', JSON.stringify({ timeStamp, token }))
-    console.log('after succ')
     return res
   })
 }

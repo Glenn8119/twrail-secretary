@@ -1,6 +1,6 @@
 const priceReducer = (state = [], action) => {
   switch (action.type) {
-    case 'FETCH_PRICE':
+    case 'RECEIVE_FETCHED_PRICE':
       return action.payload
     default:
       return state

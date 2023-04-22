@@ -1,6 +1,6 @@
 const timetableReducer = (state = [], action) => {
   switch (action.type) {
-    case 'FETCH_TIME':
+    case 'RECEIVE_FETCHED_TIMETABLE':
       return action.payload
     default:
       return state

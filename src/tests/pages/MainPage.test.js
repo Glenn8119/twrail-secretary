@@ -55,7 +55,10 @@ it('should add an item into cart when users click ticket icon', () => {
   customRender(<MainPage />, {
     preloadState: {
       timeTable: mockTimetable,
-      selectedTime: '20:00',
+      formTime: {
+        time: '20:00',
+        date: ''
+      },
       price: mockPrice
     }
   })

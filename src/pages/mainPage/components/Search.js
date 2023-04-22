@@ -5,8 +5,8 @@ import { connect } from 'react-redux'
 import {
   fetchTime,
   fetchPrice,
-  getSelectedTime,
-  getSelectedDate
+  setSelectedFormTime,
+  setSelectedFormDate
 } from '../../../actions'
 
 function changeDateForm(date) {
@@ -47,8 +47,8 @@ const DEFAULT_TIME = `${h < 10 ? '0' + h : h}:${m < 10 ? '0' + m : m}`
 const Search = ({
   fetchTime,
   fetchPrice,
-  getSelectedTime,
-  getSelectedDate,
+  setSelectedFormTime,
+  setSelectedFormDate,
   cartInfo
 }) => {
   //預設日期時間為當下
@@ -82,8 +82,8 @@ const Search = ({
 
     fetchTime(stationID, DestinationStationID, dateInput)
     fetchPrice(stationID, DestinationStationID)
-    getSelectedTime(timeInput)
-    getSelectedDate(`${dateInput}(${weekValue})`)
+    setSelectedFormTime(timeInput)
+    setSelectedFormDate(`${dateInput}(${weekValue})`)
   }
 
   const onOriginStopChange = (e) => {
@@ -180,6 +180,6 @@ const mapStateToProps = (state) => {
 export default connect(mapStateToProps, {
   fetchTime,
   fetchPrice,
-  getSelectedTime,
-  getSelectedDate
+  setSelectedFormTime,
+  setSelectedFormDate
 })(Search)

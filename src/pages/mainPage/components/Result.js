@@ -23,8 +23,8 @@ function calculateTime(DepartureTime, ArrivalTime) {
 
 const Result = ({
   timeTable,
-  selectedTime,
-  selectedDate,
+  selectedFormTime,
+  selectedFormDate,
   setShow,
   price,
   setCartDetail,
@@ -76,7 +76,7 @@ const Result = ({
   }
 
   const startItem = timeTable.find((item) =>
-    laterThan(item.OriginStopTime.DepartureTime, selectedTime)
+    laterThan(item.OriginStopTime.DepartureTime, selectedFormTime)
   )
 
   const startIdx = startItem ? timeTable.indexOf(startItem) : timeTable.length
@@ -126,8 +126,8 @@ const Result = ({
             </span>
           </div>
           <div className='title__middle'>
-            {selectedDate}
-            {selectedTime}
+            {selectedFormDate}
+            {selectedFormTime}
           </div>
           <div
             className={`title__right ${
@@ -169,8 +169,8 @@ const Result = ({
 const mapStateToProps = (state) => {
   return {
     timeTable: state.timeTable,
-    selectedTime: state.selectedTime,
-    selectedDate: state.selectedDate,
+    selectedFormTime: state.formTime.time,
+    selectedFormDate: state.formTime.date,
     price: state.price,
     cartInfo: state.cartInfo
   }

@@ -10,9 +10,11 @@ export const setNotShow = () => {
   }
 }
 
-export const setCartDetail = (detail) => {
-  return {
+export const setCartDetail = (detail) => (dispatch) => {
+  localStorage.setItem('cartDetail', JSON.stringify(detail))
+
+  dispatch({
     type: 'SET_CART_DETAIL',
     payload: detail
-  }
+  })
 }

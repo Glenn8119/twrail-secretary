@@ -10,7 +10,6 @@ const cartReducer = (state = initialState, action) => {
     case 'SET_NOT_SHOW':
       return { ...state, show: false }
     case 'SET_CART_DETAIL':
-      localStorage.setItem('cartDetail', JSON.stringify(action.payload))
       return { ...state, detail: action.payload }
     default:
       return state

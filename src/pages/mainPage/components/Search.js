@@ -1,68 +1,19 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faExchangeAlt } from '@fortawesome/free-solid-svg-icons'
 import { connect } from 'react-redux'
-import {
-  fetchTime,
-  fetchPrice,
-  setSelectedFormTime,
-  setSelectedFormDate
-} from '../../../actions'
+import { fetchTime, fetchPrice } from '../../../actions'
+import { changeDateForm, stationOptions } from '..'
 
-function changeDateForm(date) {
-  const y = date.getFullYear()
-  const m = date.getMonth()
-  const d = date.getDate()
-
-  return `${y}-${m < 9 ? '0' + (m + 1) : m + 1}-${d <= 9 ? '0' + d : d}`
-}
-
-const destOptions = [
-  { name: '南港', id: '0990' },
-  { name: '臺北', id: '1000' },
-  { name: '板橋', id: '1010' },
-  { name: '桃園', id: '1020' },
-  { name: '新竹', id: '1030' },
-  { name: '苗栗', id: '1035' },
-  { name: '台中', id: '1040' },
-  { name: '彰化', id: '1043' },
-  { name: '雲林', id: '1047' },
-  { name: '嘉義', id: '1050' },
-  { name: '台南', id: '1060' },
-  { name: '左營', id: '1070' }
-]
-
-const week = ['日', '一', '二', '三', '四', '五', '六']
-
-const date = new Date()
-const h = date.getHours()
-const m = date.getMinutes()
-
-// 最多僅能選一個月內時間
-const maxDate = new Date(date.getTime() + 1000 * 60 * 60 * 24 * 28)
-const DEFAULT_DATE = changeDateForm(date)
-const MAX_DATE = changeDateForm(maxDate)
-const DEFAULT_TIME = `${h < 10 ? '0' + h : h}:${m < 10 ? '0' + m : m}`
-
-const Search = ({
-  fetchTime,
-  fetchPrice,
-  setSelectedFormTime,
-  setSelectedFormDate,
-  cartInfo
-}) => {
-  //預設日期時間為當下
-  const [dateInput, setDateInput] = useState(DEFAULT_DATE)
-  const [timeInput, setTimeInput] = useState(DEFAULT_TIME)
-
-  //起訖站預設為南港到左營
-  const [stationID, setStationID] = useState(destOptions[0].id)
-  const [DestinationStationID, setDestinationStationID] = useState(
-    destOptions[destOptions.length - 1].id
-  )
+const Search = ({ fetchTime, fetchPrice, cartInfo, form, setForm }) => {
+  const { date, time, stationID, destinationStationID } = form
+  // 最多僅能選一個月內時間
+  const currentDate = new Date()
+  const maxDate = new Date(currentDate.getTime() + 1000 * 60 * 60 * 24 * 28)
+  const MAX_DATE = changeDateForm(maxDate)
 
   const renderOptions = useCallback(() => {
-    return destOptions.map((option) => {
+    return stationOptions.map((option) => {
       return (
         <option key={option.id} value={option.id}>
           {option.name}
@@ -74,38 +25,48 @@ const Search = ({
   function onSubmit(e) {
     e.preventDefault()
 
-    if (stationID === DestinationStationID) {
+    if (stationID === destinationStationID) {
       alert('出發站不可等於到達站')
     }
 
-    const weekValue = week[new Date(dateInput).getDay()]
-
-    fetchTime(stationID, DestinationStationID, dateInput)
-    fetchPrice(stationID, DestinationStationID)
-    setSelectedFormTime(timeInput)
-    setSelectedFormDate(`${dateInput}(${weekValue})`)
+    fetchTime(stationID, destinationStationID, date)
+    fetchPrice(stationID, destinationStationID)
   }
 
   const onOriginStopChange = (e) => {
-    setStationID(e.target.value)
+    setForm({
+      ...form,
+      stationID: e.target.value
+    })
   }
 
   const onDestinationStopChange = (e) => {
-    setDestinationStationID(e.target.value)
+    setForm({
+      ...form,
+      destinationStationID: e.target.value
+    })
   }
 
   const onDateSelectChange = (e) => {
-    setDateInput(e.target.value)
+    setForm({
+      ...form,
+      date: e.target.value
+    })
   }
 
   const onTimeSelectChange = (e) => {
-    setTimeInput(e.target.value)
+    setForm({
+      ...form,
+      time: e.target.value
+    })
   }
 
   const onExchangeClick = (e) => {
-    e.preventDefault()
-    setStationID(DestinationStationID)
-    setDestinationStationID(stationID)
+    setForm({
+      ...form,
+      stationID: form.destinationStationID,
+      destinationStationID: form.stationID
+    })
   }
 
   return (
@@ -125,7 +86,11 @@ const Search = ({
         </select>
       </div>
 
-      <button className='exchange__icon' onClick={onExchangeClick}>
+      <button
+        className='exchange__icon'
+        onClick={onExchangeClick}
+        type='button'
+      >
         <FontAwesomeIcon icon={faExchangeAlt} />
       </button>
 
@@ -134,7 +99,7 @@ const Search = ({
         <select
           id='end-box__select'
           className='end-box__select'
-          value={DestinationStationID}
+          value={destinationStationID}
           onChange={onDestinationStopChange}
         >
           {renderOptions()}
@@ -146,10 +111,10 @@ const Search = ({
         <input
           id='date-box__input'
           type='date'
-          value={dateInput}
+          value={date}
           onChange={onDateSelectChange}
           className='date-box__input'
-          min={DEFAULT_DATE}
+          min={changeDateForm(new Date())}
           max={MAX_DATE}
         />
       </div>
@@ -160,7 +125,7 @@ const Search = ({
           id='time-box__input'
           type='time'
           className='time-box__input'
-          value={timeInput}
+          value={time}
           onChange={onTimeSelectChange}
         />
       </div>
@@ -179,7 +144,5 @@ const mapStateToProps = (state) => {
 
 export default connect(mapStateToProps, {
   fetchTime,
-  fetchPrice,
-  setSelectedFormTime,
-  setSelectedFormDate
+  fetchPrice
 })(Search)

@@ -1,4 +1,4 @@
-const mockTimetable = [
+export const mockTimetable = [
   {
     TrainDate: '2023-12-29',
     DailyTrainInfo: {
@@ -81,4 +81,45 @@ const mockTimetable = [
   }
 ]
 
-export default mockTimetable
+export const mockFilteredTimetable = [
+  {
+    TrainDate: '2023-12-29',
+    DailyTrainInfo: {
+      TrainNo: '0803'
+    },
+    OriginStopTime: {
+      OSStationName: {
+        Zh_tw: '南港',
+        En: 'Nangang'
+      },
+      DepartureTime: '23:55'
+    },
+    DestinationStopTime: {
+      DSStationName: {
+        Zh_tw: '左營',
+        En: 'Zuoying'
+      },
+      ArrivalTime: '08:40'
+    }
+  },
+  {
+    TrainDate: '2023-12-29',
+    DailyTrainInfo: {
+      TrainNo: '0603'
+    },
+    OriginStopTime: {
+      OSStationName: {
+        Zh_tw: '南港',
+        En: 'Nangang'
+      },
+      DepartureTime: '23:59'
+    },
+    DestinationStopTime: {
+      DSStationName: {
+        Zh_tw: '左營',
+        En: 'Zuoying'
+      },
+      ArrivalTime: '08:50'
+    }
+  }
+]

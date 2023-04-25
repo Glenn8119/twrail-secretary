@@ -4,6 +4,8 @@ import { faArrowRight, faArrowLeft } from '@fortawesome/free-solid-svg-icons'
 import { setShow, setCartDetail } from '../../../actions'
 import { connect } from 'react-redux'
 
+const week = ['日', '一', '二', '三', '四', '五', '六']
+
 const laterThan = (t1, t2) => {
   const t1Arr = t1.split(':')
   const t2Arr = t2.split(':')
@@ -11,6 +13,8 @@ const laterThan = (t1, t2) => {
 }
 
 function calculateTime(DepartureTime, ArrivalTime) {
+  if (!DepartureTime || !ArrivalTime) return ''
+
   const DepartureArr = DepartureTime.split(':')
   const ArrivalArr = ArrivalTime.split(':')
 
@@ -23,14 +27,15 @@ function calculateTime(DepartureTime, ArrivalTime) {
 
 const Result = ({
   timeTable,
-  selectedFormTime,
-  selectedFormDate,
+  time,
+  date,
   setShow,
   price,
   setCartDetail,
   cartInfo
 }) => {
   const [startIdxOffset, setStartIdxOffset] = useState(0)
+  const weekValue = week[new Date(date).getDay()]
 
   useEffect(() => {
     setStartIdxOffset(0)
@@ -43,8 +48,8 @@ const Result = ({
     const ticket = resultArr[index]
     const clonedCartDetail = cartInfo.detail ? [...cartInfo.detail] : []
     const ticketInfo = {
-      originStop: ticket.OriginStopTime.StationName.Zh_tw,
-      destinationStop: ticket.DestinationStopTime.StationName.Zh_tw,
+      originStop: ticket.OriginStopTime.OSStationName.Zh_tw,
+      destinationStop: ticket.DestinationStopTime.DSStationName.Zh_tw,
       number: ticket.DailyTrainInfo.TrainNo,
       date: ticket.TrainDate,
       departureTime: ticket.OriginStopTime.DepartureTime,
@@ -76,7 +81,7 @@ const Result = ({
   }
 
   const startItem = timeTable.find((item) =>
-    laterThan(item.OriginStopTime.DepartureTime, selectedFormTime)
+    laterThan(item.OriginStopTime.DepartureTime, time)
   )
 
   const startIdx = startItem ? timeTable.indexOf(startItem) : timeTable.length
@@ -115,19 +120,19 @@ const Result = ({
           <div className='title__left'>
             <span>
               {timeTable.length > 0
-                ? timeTable[0].OriginStopTime.StationName.Zh_tw
+                ? timeTable[0].OriginStopTime.OSStationName.Zh_tw
                 : ''}
             </span>
             <FontAwesomeIcon icon={faArrowRight} />
             <span>
               {timeTable.length > 0
-                ? timeTable[0].DestinationStopTime.StationName.Zh_tw
+                ? timeTable[0].DestinationStopTime.DSStationName.Zh_tw
                 : ''}
             </span>
           </div>
           <div className='title__middle'>
-            {selectedFormDate}
-            {selectedFormTime}
+            {`${date}(${weekValue})`}
+            {time}
           </div>
           <div
             className={`title__right ${
@@ -169,8 +174,6 @@ const Result = ({
 const mapStateToProps = (state) => {
   return {
     timeTable: state.timeTable,
-    selectedFormTime: state.formTime.time,
-    selectedFormDate: state.formTime.date,
     price: state.price,
     cartInfo: state.cartInfo
   }

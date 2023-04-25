@@ -3,16 +3,11 @@ import { Provider } from 'react-redux'
 import { applyMiddleware, createStore } from 'redux'
 import thunk from 'redux-thunk'
 import reducers from '../../reducers'
-import { mockCartDetail, mockTimetable, mockPrice } from '../fake'
+import { mockFilteredTimetable, mockPrice, mockCartInfo } from '../fake'
 import MainPage from '../../pages/mainPage'
 import { HashRouter } from 'react-router-dom'
 import '@testing-library/jest-dom/extend-expect'
-import axios from 'axios'
-
-const mockCartInfo = {
-  show: true,
-  detail: mockCartDetail
-}
+// import axios from 'axios'
 
 const setupStore = (preloadState) => {
   return createStore(reducers, preloadState, applyMiddleware(thunk))
@@ -32,14 +27,14 @@ const customRender = (
   return render(ui, { wrapper: MockProvider, ...options })
 }
 
-if (typeof process != 'undefined') {
-  axios.defaults.adapter = require('axios/lib/adapters/http')
-}
+// if (typeof process != 'undefined') {
+//   axios.defaults.adapter = require('axios/lib/adapters/http')
+// }
 
 it('group tickets cannot be select when there are less than 11 people', async () => {
   customRender(<MainPage />, {
     preloadState: {
-      timeTable: mockTimetable,
+      timeTable: mockFilteredTimetable,
       cartInfo: mockCartInfo
     }
   })
@@ -54,11 +49,7 @@ it('group tickets cannot be select when there are less than 11 people', async ()
 it('should add an item into cart when users click ticket icon', () => {
   customRender(<MainPage />, {
     preloadState: {
-      timeTable: mockTimetable,
-      formTime: {
-        time: '20:00',
-        date: ''
-      },
+      timeTable: mockFilteredTimetable,
       price: mockPrice
     }
   })

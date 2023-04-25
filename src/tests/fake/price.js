@@ -1,4 +1,4 @@
-const mockPrice = [
+export const mockPrice = [
   {
     OriginStationID: '0990',
     OriginStationName: {
@@ -66,5 +66,3 @@ const mockPrice = [
     VersionID: 10
   }
 ]
-
-export default mockPrice

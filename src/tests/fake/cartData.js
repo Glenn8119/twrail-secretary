@@ -23,4 +23,9 @@ const mockCartDetail = [
   }
 ]
 
-export default mockCartDetail
+export const mockCartInfo = {
+  show: true,
+  detail: mockCartDetail
+}
+
+export default mockCartInfo

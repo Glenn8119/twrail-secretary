@@ -3,7 +3,7 @@ import { faShoppingCart } from '@fortawesome/free-solid-svg-icons'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 
-import React, { useEffect, useCallback } from 'react'
+import React, { useEffect, useState } from 'react'
 import Search from './components/Search'
 import Result from './components/Result'
 import Carousel from './components/Carousel'
@@ -23,8 +23,44 @@ const links = [
   }
 ]
 
+export const stationOptions = [
+  { name: '南港', id: '0990' },
+  { name: '臺北', id: '1000' },
+  { name: '板橋', id: '1010' },
+  { name: '桃園', id: '1020' },
+  { name: '新竹', id: '1030' },
+  { name: '苗栗', id: '1035' },
+  { name: '台中', id: '1040' },
+  { name: '彰化', id: '1043' },
+  { name: '雲林', id: '1047' },
+  { name: '嘉義', id: '1050' },
+  { name: '台南', id: '1060' },
+  { name: '左營', id: '1070' }
+]
+
+const changeTimeForm = (date) => {
+  const h = date.getHours()
+  const m = date.getMinutes()
+  return `${h < 10 ? '0' + h : h}:${m < 10 ? '0' + m : m}`
+}
+
+export function changeDateForm(date) {
+  const y = date.getFullYear()
+  const m = date.getMonth()
+  const d = date.getDate()
+
+  return `${y}-${m < 9 ? '0' + (m + 1) : m + 1}-${d <= 9 ? '0' + d : d}`
+}
+
 const MainPage = ({ setShow, cartInfo, setCartDetail }) => {
-  // 如果原本localstorage就有資料的話就先讀取
+  // 預設日期時間為當下, 起訖站預設為南港到左營
+  const [form, setForm] = useState({
+    date: changeDateForm(new Date()),
+    time: changeTimeForm(new Date()),
+    stationID: stationOptions[0].id,
+    destinationStationID: stationOptions[stationOptions.length - 1].id
+  })
+
   useEffect(() => {
     const storageData = JSON.parse(localStorage.getItem('cartDetail'))
     if (storageData) {
@@ -37,24 +73,21 @@ const MainPage = ({ setShow, cartInfo, setCartDetail }) => {
     setShow()
   }
 
-  const renderLinks = useCallback(
-    () =>
-      links.map((link) => {
-        return (
-          <li className='nav-item' key={link.text}>
-            <a
-              target='_blank'
-              className='nav-item__link'
-              href={link.href}
-              rel='noreferrer noopener'
-            >
-              {link.text}
-            </a>
-          </li>
-        )
-      }),
-    []
-  )
+  const renderLinks = () =>
+    links.map((link) => {
+      return (
+        <li className='nav-item' key={link.text}>
+          <a
+            target='_blank'
+            className='nav-item__link'
+            href={link.href}
+            rel='noreferrer noopener'
+          >
+            {link.text}
+          </a>
+        </li>
+      )
+    })
 
   return (
     <div className='container'>
@@ -73,8 +106,8 @@ const MainPage = ({ setShow, cartInfo, setCartDetail }) => {
 
       <main className='main'>
         <Carousel />
-        <Search />
-        <Result />
+        <Search form={form} setForm={setForm} />
+        <Result time={form.time} date={form.date} />
         <Price />
         <Cart />
       </main>
@@ -84,10 +117,6 @@ const MainPage = ({ setShow, cartInfo, setCartDetail }) => {
   )
 }
 
-const mapStateToProps = (state) => {
-  return {
-    cartInfo: state.cartInfo
-  }
-}
+const mapStateToProps = (state) => ({ cartInfo: state.cartInfo })
 
 export default connect(mapStateToProps, { setShow, setCartDetail })(MainPage)

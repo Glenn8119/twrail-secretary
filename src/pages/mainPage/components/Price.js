@@ -1,12 +1,68 @@
 import React, { Fragment } from 'react'
 import { connect } from 'react-redux'
-import { groupPrice, oldPrice } from '../../../utils'
+import { CABIN_CLASS, FARE_CLASS, TICKET_TYPE } from '../../../config'
+
+export const calculatePrice = (price, ticketType, fareClass, cabinClass) => {
+  return price.find(
+    (_price) =>
+      _price.TicketType === ticketType &&
+      _price.FareClass === fareClass &&
+      _price.CabinClass === cabinClass
+  )?.Price
+}
+
+export const collectPrices = (price) => {
+  if (!price.length) return
+
+  const priceNormalStandard = calculatePrice(
+    price,
+    TICKET_TYPE.NORMAL,
+    FARE_CLASS.ADULT,
+    CABIN_CLASS.STANDARD
+  )
+  const priceNormalBusiness = calculatePrice(
+    price,
+    TICKET_TYPE.NORMAL,
+    FARE_CLASS.ADULT,
+    CABIN_CLASS.BUSINESS
+  )
+  const priceNormalFree = calculatePrice(
+    price,
+    TICKET_TYPE.NORMAL,
+    FARE_CLASS.ADULT,
+    CABIN_CLASS.FREE
+  )
+  const priceGroupStandard = calculatePrice(
+    price,
+    TICKET_TYPE.GROUP,
+    FARE_CLASS.ADULT,
+    CABIN_CLASS.STANDARD
+  )
+  const priceGroupBusiness = calculatePrice(
+    price,
+    TICKET_TYPE.GROUP,
+    FARE_CLASS.ADULT,
+    CABIN_CLASS.BUSINESS
+  )
+
+  return {
+    priceNormalStandard,
+    priceNormalBusiness,
+    priceNormalFree,
+    priceGroupStandard,
+    priceGroupBusiness
+  }
+}
 
 const Price = ({ price }) => {
   const renderDetail = () => {
-    const priceBusiness = price[0].Fares[0].Price
-    const priceNormal = price[0].Fares[1].Price
-    const pricefreeSeat = price[0].Fares[2].Price
+    const {
+      priceNormalStandard,
+      priceNormalBusiness,
+      priceNormalFree,
+      priceGroupStandard,
+      priceGroupBusiness
+    } = collectPrices(price)
 
     return (
       <section className='price'>
@@ -17,27 +73,23 @@ const Price = ({ price }) => {
             <tr className='detail-price__head-row'>
               <th></th>
               <th>全票</th>
-              <th>孩童票/敬老票/愛心票</th>
               <th>團體票</th>
             </tr>
           </thead>
           <tbody className='detail-price__body'>
             <tr className='detail-price__body-row'>
               <td>標準車廂</td>
-              <td>${priceNormal}</td>
-              <td>${oldPrice(priceNormal)}</td>
-              <td>${groupPrice(priceNormal)}</td>
+              <td>${priceNormalStandard}</td>
+              <td>${priceGroupStandard}</td>
             </tr>
             <tr className='detail-price__body-row'>
               <td>商務車廂</td>
-              <td>${priceBusiness}</td>
-              <td>${oldPrice(priceBusiness)}</td>
-              <td>${groupPrice(priceBusiness)}</td>
+              <td>${priceNormalBusiness}</td>
+              <td>${priceGroupBusiness}</td>
             </tr>
             <tr className='detail-price__body-row'>
               <td>自由座車廂</td>
-              <td>${pricefreeSeat}</td>
-              <td>${oldPrice(pricefreeSeat)}</td>
+              <td>${priceNormalFree}</td>
               <td>-</td>
             </tr>
           </tbody>

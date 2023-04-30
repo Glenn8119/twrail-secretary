@@ -1,27 +1,47 @@
-const discount = (price, disc) => {
-  if ((price * disc) % 10 > 5) {
-    return Math.round((price * disc) / 10) * 10 - 5
-  }
-  return Math.round((price * disc) / 10) * 10
-}
-
-// 團體票規則: 95折之後個位數大於五則取5, 小於五則取0
-export const groupPrice = (price) => discount(price, 0.95)
-
-// 敬老票規則: 半價之後個位數大於五則取5, 小於五則取0
-export const oldPrice = (price) => discount(price, 0.5)
+import { CABIN_CLASS, TICKET_TYPE } from '../config'
 
 export function getTicketPrice(item) {
-  const price = item.price[item.seatType]
+  const { ticketType, cabinClass, price } = item
+  const {
+    priceNormalStandard,
+    priceNormalBusiness,
+    priceNormalFree,
+    priceGroupStandard,
+    priceGroupBusiness
+  } = price
+
+  let p
+  if (ticketType === TICKET_TYPE.NORMAL) {
+    switch (cabinClass) {
+      case CABIN_CLASS.STANDARD:
+        p = priceNormalStandard
+        break
+      case CABIN_CLASS.BUSINESS:
+        p = priceNormalBusiness
+        break
+      case CABIN_CLASS.FREE:
+        p = priceNormalFree
+        break
+      default:
+        p = 0
+    }
+  } else if (ticketType === TICKET_TYPE.GROUP) {
+    switch (cabinClass) {
+      case CABIN_CLASS.STANDARD:
+        p = priceGroupStandard
+        break
+      case CABIN_CLASS.BUSINESS:
+        p = priceGroupBusiness
+        break
+      default:
+        p = 0
+    }
+  }
+
   const amount = item.ticketNumber
 
-  if (item.ticketType === 'adult') {
-    return price * amount
-  } else if (item.ticketType === 'old') {
-    return oldPrice(price) * amount
-  } else {
-    return groupPrice(price) * amount
-  }
+  const totalPrice = p * amount
+  return totalPrice
 }
 
 export function getTimeDifference(train) {

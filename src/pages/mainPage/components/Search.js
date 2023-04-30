@@ -135,12 +135,7 @@ const Search = ({ fetchTime, fetchPrice, cartInfo, form, setForm }) => {
   )
 }
 
-const mapStateToProps = (state) => {
-  return {
-    price: state.price,
-    cartInfo: state.cartInfo
-  }
-}
+const mapStateToProps = (state) => ({ cartInfo: state.cartInfo })
 
 export default connect(mapStateToProps, {
   fetchTime,

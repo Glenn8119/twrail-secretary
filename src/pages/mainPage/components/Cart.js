@@ -9,7 +9,7 @@ import {
   toMillisecond
 } from '../../../utils'
 
-import CartItems from './CartItems'
+import CartItem from './CartItem'
 
 function findClosest(arr) {
   const nowTime = new Date().getTime()
@@ -17,7 +17,7 @@ function findClosest(arr) {
   return Math.min(...positiveArr)
 }
 
-const Cart = ({ cartInfo, setNotShow, setCartDetail }) => {
+const Cart = ({ cartInfo, setNotShow, setCartDetail, price }) => {
   const refCart = useRef()
   const { show, detail } = cartInfo
 
@@ -92,7 +92,7 @@ const Cart = ({ cartInfo, setNotShow, setCartDetail }) => {
 
   const renderDetail = () =>
     detail.map((item, index) => {
-      return <CartItems item={item} index={index} key={index} />
+      return <CartItem item={item} index={index} key={index} />
     })
 
   //計算票價總和
@@ -119,7 +119,8 @@ const Cart = ({ cartInfo, setNotShow, setCartDetail }) => {
 
 const mapStateToProps = (state) => {
   return {
-    cartInfo: state.cartInfo
+    cartInfo: state.cartInfo,
+    price: state.price
   }
 }
 

@@ -66,3 +66,54 @@ export const mockPrice = [
     VersionID: 10
   }
 ]
+
+export const mockFilteredPrice = [
+  {
+    TicketType: 1,
+    FareClass: 9,
+    CabinClass: 1,
+    Price: 765
+  },
+  {
+    TicketType: 1,
+    FareClass: 1,
+    CabinClass: 1,
+    Price: 1530
+  },
+  {
+    TicketType: 1,
+    FareClass: 9,
+    CabinClass: 3,
+    Price: 740
+  },
+  {
+    TicketType: 1,
+    FareClass: 1,
+    CabinClass: 2,
+    Price: 2500
+  },
+  {
+    TicketType: 1,
+    FareClass: 1,
+    CabinClass: 3,
+    Price: 1480
+  },
+  {
+    TicketType: 1,
+    FareClass: 9,
+    CabinClass: 2,
+    Price: 1250
+  },
+  {
+    TicketType: 8,
+    FareClass: 1,
+    CabinClass: 2,
+    Price: 2375
+  },
+  {
+    TicketType: 8,
+    FareClass: 1,
+    CabinClass: 1,
+    Price: 1450
+  }
+]

@@ -3,6 +3,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowRight, faArrowLeft } from '@fortawesome/free-solid-svg-icons'
 import { setShow, setCartDetail } from '../../../actions'
 import { connect } from 'react-redux'
+import { CABIN_CLASS, TICKET_TYPE } from '../../../config'
+import { collectPrices } from './Price'
 
 const week = ['日', '一', '二', '三', '四', '五', '六']
 
@@ -53,13 +55,16 @@ const Result = ({
       number: ticket.DailyTrainInfo.TrainNo,
       date: ticket.TrainDate,
       departureTime: ticket.OriginStopTime.DepartureTime,
-      price: {
-        business: price[0].Fares[0].Price,
-        normal: price[0].Fares[1].Price,
-        freeSeat: price[0].Fares[2].Price
-      },
-      ticketType: 'adult',
-      seatType: 'normal',
+      // price: {
+      //   business: price[0].Fares[0].Price,
+      //   normal: price[0].Fares[1].Price,
+      //   freeSeat: price[0].Fares[2].Price
+      // },
+      // ticketType: 'adult',
+      // cabinClass: 'normal', -> cabinClass
+      price: collectPrices(price),
+      ticketType: TICKET_TYPE.NORMAL,
+      cabinClass: CABIN_CLASS.STANDARD,
       ticketNumber: 1
     }
 

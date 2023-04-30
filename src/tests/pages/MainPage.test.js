@@ -7,6 +7,7 @@ import { mockFilteredTimetable, mockPrice, mockCartInfo } from '../fake'
 import MainPage from '../../pages/mainPage'
 import { HashRouter } from 'react-router-dom'
 import '@testing-library/jest-dom/extend-expect'
+import { TICKET_TYPE } from '../../config'
 // import axios from 'axios'
 
 const setupStore = (preloadState) => {
@@ -41,7 +42,7 @@ it('group tickets cannot be select when there are less than 11 people', async ()
   window.alert = jest.fn()
 
   const selectElement = screen.getAllByTestId('ticketType')
-  fireEvent.change(selectElement[0], { target: { value: 'group' } })
+  fireEvent.change(selectElement[0], { target: { value: TICKET_TYPE.GROUP } })
   expect(window.alert).toHaveBeenCalledTimes(1)
   expect(window.alert).toHaveBeenCalledWith('選擇團體票人數須至少11人')
 })

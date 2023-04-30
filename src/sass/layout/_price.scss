@@ -12,7 +12,7 @@
     margin: 1rem 0;
 
     &::after {
-      content: "";
+      content: '';
       display: block;
       width: 10rem;
       height: 0.3rem;
@@ -27,11 +27,7 @@
 
 .detail-price {
   width: 100%;
-  @media only screen and (max-width: $bp-smallest) {
-    // text-align: left;           /* 保证内容少时居中，内容多时左对齐 */
-    display: inline-block; /* 保证内容少时居中，内容多时左对齐 */
-    overflow: auto;
-  }
+
   &__head,
   &__body {
     width: 100%;
@@ -53,7 +49,7 @@
       flex-grow: 2;
     }
     th:first-child {
-      text-align: right;
+      text-align: center;
       flex-grow: 1;
     }
   }
@@ -67,7 +63,7 @@
       }
     }
     td:first-child {
-      text-align: right;
+      text-align: center;
       flex-grow: 1;
       @media only screen and (max-width: $bp-smallest) {
         flex-grow: 0;

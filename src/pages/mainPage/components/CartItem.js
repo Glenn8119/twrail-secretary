@@ -1,27 +1,35 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { setCartDetail } from '../../../actions'
+import { CABIN_CLASS, TICKET_TYPE } from '../../../config'
 import { getTicketPrice, getTimeDifference } from '../../../utils'
 
-const CartItems = ({ cartInfo, setCartDetail, item, index }) => {
+const CartItem = ({ cartInfo, setCartDetail, item, index, price }) => {
   const { detail } = cartInfo
 
   const onSelect = (e) => {
-    const type = e.target.name
+    const { name: type, value } = e.target
+    const IntVal = parseInt(value)
 
     if (type === 'ticketType') {
-      if (item.ticketNumber < 11 && e.target.value === 'group') {
+      if (item.ticketNumber < 11 && IntVal === TICKET_TYPE.GROUP) {
         alert('選擇團體票人數須至少11人')
         return
       }
-      if (item.seatType === 'freeSeat' && e.target.value === 'group') {
+      if (
+        item.cabinClass === CABIN_CLASS.FREE &&
+        IntVal === TICKET_TYPE.GROUP
+      ) {
         alert('自由座無販售團體票')
         return
       }
     }
 
-    if (type === 'seatType') {
-      if (item.ticketType === 'group' && e.target.value === 'freeSeat') {
+    if (type === 'cabinClass') {
+      if (
+        item.ticketType === TICKET_TYPE.GROUP &&
+        IntVal === CABIN_CLASS.FREE
+      ) {
         alert('自由座無販售團體票')
         return
       }
@@ -29,7 +37,7 @@ const CartItems = ({ cartInfo, setCartDetail, item, index }) => {
 
     const clonedDetail = [...detail]
     const clonedItem = { ...item }
-    clonedItem[type] = e.target.value
+    clonedItem[type] = parseInt(IntVal)
     clonedDetail[index] = clonedItem
     setCartDetail(clonedDetail)
   }
@@ -39,7 +47,7 @@ const CartItems = ({ cartInfo, setCartDetail, item, index }) => {
     setCartDetail(updatedArr)
   }
 
-  const onClickUp = () => {
+  const onIncrement = () => {
     const clonedItem = { ...item }
     const clonedDetail = [...detail]
     clonedItem.ticketNumber += 1
@@ -47,11 +55,10 @@ const CartItems = ({ cartInfo, setCartDetail, item, index }) => {
     setCartDetail(clonedDetail)
   }
 
-  const onClickDown = () => {
+  const onDecrement = () => {
     //團體票人數須大於11人
-    if (item.ticketNumber === 11 && item.ticketType === 'group') {
-      alert('團體票人數須大於11人, 若要減少張數請選擇其他票種')
-      return
+    if (item.ticketNumber === 11 && item.ticketType === TICKET_TYPE.GROUP) {
+      return alert('團體票人數須大於11人, 若要減少張數請選擇其他票種')
     }
 
     const clonedItem = { ...item }
@@ -89,14 +96,14 @@ const CartItems = ({ cartInfo, setCartDetail, item, index }) => {
         <div className='item__middle-price'>$ {ticketPrice} 元</div>
         <div className='item__middle-select'>
           <select
-            className='item__middle-select-seatType'
+            className='item__middle-select-cabinClass'
             onChange={onSelect}
-            name='seatType'
-            value={item.seatType}
+            name='cabinClass'
+            value={item.cabinClass}
           >
-            <option value='normal'>標準</option>
-            <option value='business'>商務</option>
-            <option value='freeSeat'>自由座</option>
+            <option value={CABIN_CLASS.STANDARD}>標準</option>
+            <option value={CABIN_CLASS.BUSINESS}>商務</option>
+            <option value={CABIN_CLASS.FREE}>自由座</option>
           </select>
           <select
             className='item__middle-select-ticketType'
@@ -105,16 +112,15 @@ const CartItems = ({ cartInfo, setCartDetail, item, index }) => {
             value={item.ticketType}
             data-testid='ticketType'
           >
-            <option value='adult'>全票</option>
-            <option value='old'>敬老</option>
-            <option value='group'>團體</option>
+            <option value={TICKET_TYPE.NORMAL}>全票</option>
+            <option value={TICKET_TYPE.GROUP}>團體</option>
           </select>
         </div>
       </div>
       <div className='item__right'>
-        <span onClick={onClickUp} className='item__right-up'></span>
+        <span onClick={onIncrement} className='item__right-up'></span>
         <span>{item.ticketNumber}</span>
-        <span onClick={onClickDown} className='item__right-down'></span>
+        <span onClick={onDecrement} className='item__right-down'></span>
       </div>
       <button
         className='item__icon'
@@ -127,8 +133,9 @@ const CartItems = ({ cartInfo, setCartDetail, item, index }) => {
 
 const mapStateToProps = (state) => {
   return {
-    cartInfo: state.cartInfo
+    cartInfo: state.cartInfo,
+    price: state.price
   }
 }
 
-export default connect(mapStateToProps, { setCartDetail })(CartItems)
+export default connect(mapStateToProps, { setCartDetail })(CartItem)

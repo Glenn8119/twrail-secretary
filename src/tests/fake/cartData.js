@@ -1,3 +1,5 @@
+import { TICKET_TYPE } from '../../config'
+
 const mockCartDetail = [
   {
     originStop: '南港',
@@ -6,8 +8,8 @@ const mockCartDetail = [
     date: '2022-12-26',
     departureTime: '06:15',
     price: { business: 1530, normal: 2500, freeSeat: 1480 },
-    ticketType: 'adult',
-    seatType: 'normal',
+    ticketType: TICKET_TYPE.NORMAL,
+    cabinClass: 'normal',
     ticketNumber: 1
   },
   {
@@ -17,8 +19,8 @@ const mockCartDetail = [
     date: '2022-12-26',
     departureTime: '08:17',
     price: { business: 230, normal: 550, freeSeat: 220 },
-    ticketType: 'adult',
-    seatType: 'normal',
+    ticketType: TICKET_TYPE.NORMAL,
+    cabinClass: 'normal',
     ticketNumber: 1
   }
 ]
